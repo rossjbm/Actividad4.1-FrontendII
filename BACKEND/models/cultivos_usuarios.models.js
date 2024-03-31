@@ -7,8 +7,8 @@ const cultivosUsuariosSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        tamanio_superficie: {
-            type: String,
+        superficie: {
+            type: Number,
             required: true
         },
         numero_cultivos: {
@@ -24,6 +24,10 @@ const cultivosUsuariosSchema = new mongoose.Schema(
             required: true
         },
         tipo_fertilizante: {
+            type: String,
+            required: true
+        },
+        cientifico: {
             type: String,
             required: true
         }

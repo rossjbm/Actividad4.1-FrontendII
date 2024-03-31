@@ -7,27 +7,23 @@ const cultivosSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        imagen: {
-            type: String,
-            required: true
-        },
         tiempo_crecimiento: {
             type: String,
             required: true
         },
-        dias_riego: {
-            type: Array,
+        cantidad_riego: {
+            type: String,
             required: true
         },
-        dias_abono: {
-            type: Array,
+        dias_poda: {
+            type: String,
             required: true
         },
         plagas: {
             type: Array,
             required: true
         },
-        cantidad_cultivo: {
+        dias_fertilizacion: {
             type: String,
             required: true
         },
@@ -36,6 +32,14 @@ const cultivosSchema = new mongoose.Schema(
             required: true
         },
         dia_floracion: {
+            type: String,
+            required: true
+        },
+        humedad_ideal: {
+            type: String,
+            required: true
+        },
+        temperatura_ideal: {
             type: String,
             required: true
         }
