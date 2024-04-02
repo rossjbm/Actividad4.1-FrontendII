@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 //componentes
-import { Encabezado } from "./componentes/globales/Encabezado/Encabezado";
-import { NavInferior } from "./componentes/globales/Encabezado/NavInferior";
-import { Pie } from "./componentes/globales/Pie/Pie";
-import { Landing } from "./paginas/Landing/Landing";
+import { Encabezado } from "./Componentes/globales/Encabezado/Encabezado";
+import { NavInferior } from "./Componentes/globales/Encabezado/NavInferior";
+import { Pie } from "./Componentes/globales/Pie/Pie";
+import { Landing } from "./Paginas/Landing/Landing";
+
 
 export const Mostrar = React.createContext();
 
