@@ -11,6 +11,7 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes}){
     const [mesSiguiente,setMesSiguiente] = useState([])
     const [semanaDia,setSemanaDia]= useState([])
     const date = new Date();
+    const hoy = date.getDate();
 
     
     
@@ -38,9 +39,11 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes}){
         const diasSiguiente = Array.from({ length: diasDelMesSiguiente }, (_, i) => i + 1);
 
             const limitado =  diasSiguiente.slice(0,(42-(diaSemana.length+diasActual.length)))
+            const anterior = diasAnterior.reverse().slice(0,diaSemana.length)
+            console.log(anterior);
 
         setSemanaDia(diaSemana)
-        setMesAnterior(diasAnterior.reverse())
+        setMesAnterior(anterior.reverse())
         setMesActual(diasActual)
         setMesSiguiente(limitado)
     },[mes])
@@ -86,7 +89,8 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes}){
                     </div>
                 ))}
                 {mesActual.map((e,i)=>(
-                    <div className="bg-Verde-claro-400 flex px-1 border rounded-md border-black h-14 w-full">
+                    <div className="bg-Verde-claro-400 flex border rounded-md border-black h-14 w-full">
+                        <div className={`${e == hoy ? 'bg-Marron-400 h-auto':''} h-auto w-auto m-1`}> </div>
                         <p>{e}</p>
                     </div>
                 ))}
