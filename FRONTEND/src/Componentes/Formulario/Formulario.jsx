@@ -85,29 +85,29 @@ const FormularioCultivo = () => {
 
     return (
         <div className="flex justify-center items-center h-screen">
-            <div className="bg-gray-100 p-4 rounded-lg shadow-md w-96" style={{ backgroundColor: '#E0C899' }}>
-                <h2 className="text-xl font-bold mb-4 text-center font-titulo">¿Recomendable Cultivar?</h2>
+            <div className="p-4 rounded-lg shadow-md w-96 bg-Marron-400 dark:bg-Verde-oscuro-800">
+                <h2 className="text-xl font-bold mb-4 text-center font-titulo dark:text-white">¿Recomendable Cultivar?</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4 ">
-                    <label htmlFor="cultivo" className="block font-titulo">Selecciona el cultivo</label>
-                    <select id="cultivo" value={cultivo} onChange={(e) => setCultivo(e.target.value)} className="input w-full rounded-md border-gray-300 font-texto">
+                    <label htmlFor="cultivo" className="block font-titulo dark:text-white">Selecciona el cultivo</label>
+                    <select id="cultivo" value={cultivo} onChange={(e) => setCultivo(e.target.value)} className="input w-full rounded-md font-texto dark:bg-Verde-claro-600">
                         <option value="">Selecciona un cultivo</option>
                         {opcionesCultivo.map(opcion => (
                             <option key={opcion} value={opcion}>{opcion}</option>
                         ))}
                     </select>
 
-                    <label htmlFor="humedad" className="block font-titulo">Humedad Actual</label>
-                    <input type="number" id="humedad" value={humedad !== null ? humedad : ''} onChange={(e) => setHumedad(e.target.value)} className="input w-full rounded-md border-gray-300 font-texto" />
+                    <label htmlFor="humedad" className="block font-titulo dark:text-white">Humedad Actual</label>
+                    <input type="number" id="humedad" value={humedad !== null ? humedad : ''} onChange={(e) => setHumedad(e.target.value)} className="input w-full rounded-md  font-texto dark:bg-Verde-claro-600" />
 
-                    <label htmlFor="temperatura" className="block font-titulo">Temperatura Actual</label>
-                    <input type="number" id="temperatura" value={temperatura !== null ? temperatura : ''} onChange={(e) => setTemperatura(e.target.value)} className="input w-full rounded-md border-gray-300 font-texto" />
+                    <label htmlFor="temperatura" className="block font-titulo dark:text-white">Temperatura Actual</label>
+                    <input type="number" id="temperatura" value={temperatura !== null ? temperatura : ''} onChange={(e) => setTemperatura(e.target.value)} className="input w-full rounded-md  font-texto dark:bg-Verde-claro-600" />
 
-                    <label htmlFor="ubicacion" className="block font-titulo">Localización</label>
-                    <input type="text" id="ubicacion" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} className="input w-full rounded-md border-gray-300 font-texto" />
+                    <label htmlFor="ubicacion" className="block font-titulo dark:bg-Verde-oscuro-800 dark:text-white">Localización</label>
+                    <input type="text" id="ubicacion" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} className="input w-full rounded-md font-texto dark:bg-Verde-claro-600" />
 
                     <div className="flex justify-center">
-                        <button type="submit" className="btn btn-primary btn-outline bg-lime-900 border-2 border-lime-900 px-4 py-2 rounded-lg text-white font-titulo">Guardar</button>
+                        <button type="submit" className="btn btn-primary btn-outline bg-Verde-oscuro-400 border-2 border-Verde-oscuro-400 dark:border-Marron-900     px-4 py-2 rounded-lg text-white font-titulo dark:bg-Marron-900">Guardar</button>
                     </div>
                 </form>
 

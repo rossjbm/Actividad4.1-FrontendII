@@ -5,9 +5,9 @@ import imagenExito from "../../assets/Iconos/exito.png";
 
 const Alerta = ({ titulo, mensaje, tipo, onClose }) => {
     const modalClasses = `fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50`;
-    const modalContentClasses = `bg-Marron-400 p-6 rounded-lg shadow-lg flex flex-col items-center`;
-    const alertClasses = `text-black text-center text-lg font-texto`;
-    const tituloClasses = `text-xl font-bold mb-2 font-titulo`;
+    const modalContentClasses = `bg-Marron-400 p-6 rounded-lg shadow-lg flex flex-col items-center dark:bg-Verde-oscuro-600`;
+    const alertClasses = `text-black text-center text-lg font-texto dark:bg-Verde-oscuro-600 dark:text-white`;
+    const tituloClasses = `text-xl font-bold mb-2 font-titulo dark:bg-Verde-oscuro-600 dark:text-white`;
     const imagenClasses = `mt-4 mb-2 w-22 h-22`; 
 
     // Lógica para seleccionar la imagen según el tipo de alerta
