@@ -20,7 +20,10 @@ export default {
       fontFamily:{
         'texto':['Klee One','sans-serif'],
         'titulo':['Margarine','sans-serif']
-      }
+      },
+      backgroundImage: {
+        'fondoLanding': "url('/src/assets/imagen-landing.jpg')",
+      },
     },
   },
   plugins: [require("flowbite/plugin")],

@@ -22,7 +22,7 @@ export function ModoOscuro() {
     <button onClick={() => setDarkMode(!darkMode)}  className='hover:bg-[#9C8C6D66] p-2 rounded-xl hidden lg:flex'>
       Modo {darkMode ? 'Claro' : 'Oscuro'}
     </button>
-    <button onClick={() => setDarkMode(!darkMode)}  className='w-auto hover:bg-Verde-oscuro-800 dark:hover:bg-Verde-claro-800 p-2 rounded-full'>
+    <button onClick={() => setDarkMode(!darkMode)}  className='flex lg:hidden w-auto hover:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-400 active:bg-Verde-oscuro-800 dark:active:bg-Verde-claro-800 p-2 rounded-full'>
       {darkMode ? <FaSun className="text-4xl"/> : <BsFillMoonStarsFill className="text-4xl"/>}
     </button>
   </>);
