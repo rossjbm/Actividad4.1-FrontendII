@@ -11,6 +11,7 @@ const db = require('./conexion/conexion');
 
 var cultivos_usuarios = require('./routes/cultivos_usuarios.routes');
 var cultivos = require('./routes/cultivos.routes');
+var usuarios = require('./routes/usuarios.routes');
 
 var app = express();
 
@@ -27,8 +28,9 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/cultivos_usuarios', cultivos_usuarios);
-app.use('/cultivos', cultivos);
+app.use('/cultivos', cultivos_usuarios);
+app.use('/cultivosData', cultivos);
+app.use('/usuarios', usuarios);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

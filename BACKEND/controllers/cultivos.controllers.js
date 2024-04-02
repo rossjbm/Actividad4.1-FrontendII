@@ -1,4 +1,4 @@
-const cultivosModels = require("../models/cultivos.model");
+const cultivosModels = require("../models/cultivosData.model");
 
 class cultivosControllers {
     async listar(req, res, next) { 
@@ -7,7 +7,7 @@ class cultivosControllers {
             if (data.length === 0) {
                 return res.status('200').json({ mensaje: "No hay cultivos registrados" })
             }
-            return res.status('200').json({ cultivos_usuarios: data, mensaje: "Listado con Exito cultivos" })
+            return res.status('200').json({ cultivosData: data, mensaje: "Listado con Exito cultivos" })
         } catch (error) {
             console.log('Hubo algún error', error); // vemos error por consola
             res.status('404').json({"error":error}) //estado

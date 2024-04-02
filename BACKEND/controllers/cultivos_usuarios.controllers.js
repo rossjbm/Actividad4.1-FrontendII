@@ -1,4 +1,4 @@
-const cultivos_usuariosModels = require("../models/cultivos_usuarios.models");
+const cultivos_usuariosModels = require("../models/cultivos.models");
 
 class cultivos_usuariosControllers {
     async listar(req, res, next) {
@@ -8,6 +8,22 @@ class cultivos_usuariosControllers {
                 return res.status('200').json({ mensaje: "No hay cultivos registrados" })
             }
             return res.status('200').json({ cultivos_usuarios: data, mensaje: "Listado con Exito cultivos_usuarios" })
+        } catch (error) {
+            console.log('Hubo algún error', error); // vemos error por consola
+            res.status('404').json({ "error": error }) //estado
+        }
+    }
+
+    async listarDeUsuarios(req, res, next) {
+        try {
+            const id = req.params.id
+            console.log(id)
+            const data = await cultivos_usuariosModels.find({usuarioId: id});
+            console.log(data)
+            if (data.length === 0) {
+                return res.status('200').json({ mensaje: "No hay cultivos registrados" })
+            }
+            return res.status('200').json({ cultivos: data, mensaje: "Listado con Exito cultivos_usuarios" })
         } catch (error) {
             console.log('Hubo algún error', error); // vemos error por consola
             res.status('404').json({ "error": error }) //estado
@@ -30,19 +46,19 @@ class cultivos_usuariosControllers {
 
     async agregar(req, res, next) {
         try {
-            const { nombre, cientifico, superficie, numero_cultivos, dia_plantacion, fertilizante, tipo_fertilizante } = req.body;
-            if (numero_cultivos < 0) {
+            const { nombre, plantacion, superficie, numeroCultivos, fertilizante, usuarioId} = req.body;
+            if (numeroCultivos < 0) {
                 res.status('404').json({ "error": "Los cultivos deben ser minimo 1" })
             }
             if (superficie < 0) {
                 res.status('404').json({ "error": "La superficie deben ser minimo 1" })
             }
             const data = {
-                nombre, cientifico, superficie, numero_cultivos, dia_plantacion, fertilizante, tipo_fertilizante
+                nombre, plantacion, superficie, numeroCultivos, fertilizante, usuarioId
             }
             const cultivo = await cultivos_usuariosModels.create(data);
             if (cultivo) {
-                return res.status('201').json({cultivos_usuario: cultivo, mensaje: "Agregado el Cultivo"})
+                return res.status('201').json({cultivoCreado: cultivo, mensaje: "Agregado el Cultivo"})
             }
             return res.status('404').json({ "error": "No se agrego el cultivo" })
         } catch (error) {

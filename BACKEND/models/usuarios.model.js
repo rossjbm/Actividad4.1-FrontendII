@@ -1,33 +1,29 @@
 const mongoose = require('mongoose'); //requerimos libreria de mongo
 
-const cultivosUsuariosSchema = new mongoose.Schema( 
+const usuariosSchema = new mongoose.Schema( 
     {
         id: mongoose.Schema.ObjectId,
-        nombre: {
+        nombreCompleto: {
             type: String,
             required: true
         },
-        superficie: {
-            type: Number,
-            required: true
-        },
-        numero_cultivos: {
-            type: Number,
-            required: true
-        },
-        dia_plantacion: {
+        usuarioUnico: {
             type: String,
             required: true
         },
-        fertilizante: {
+        correo: {
             type: String,
             required: true
         },
-        tipo_fertilizante: {
+        contrasena: {
             type: String,
             required: true
         },
-        cientifico: {
+        latitud: {
+            type: String,
+            required: true
+        },
+        longitud: {
             type: String,
             required: true
         }
@@ -37,4 +33,4 @@ const cultivosUsuariosSchema = new mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model('cultivos_usuarios', cultivosUsuariosSchema, 'cultivos_usuarios') //primer argumento: nombre del modelo; segundo argumento: esquema; tercer argumento: nombre de la collection
+module.exports = mongoose.model('usuarios', usuariosSchema, 'usuarios') //primer argumento: nombre del modelo; segundo argumento: esquema; tercer argumento: nombre de la collection
