@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 //iconos
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import { FaSun } from "react-icons/fa";
 
+//contexto
+import { Tema } from '../../App';
+
 
 export function ModoOscuro() {
-  const [darkMode, setDarkMode] = useState(
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
+
+  const {darkMode, setDarkMode} = useContext(Tema)
 
   useEffect(() => {
     if (darkMode) {

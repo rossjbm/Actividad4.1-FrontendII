@@ -15,7 +15,7 @@ export function CalendarioGeneral() {
     }
 
     return <>
-        <div className='flex mt-6 items-center justify-center flex-col'>
+        <div className='flex pt-6 items-center justify-center flex-col'>
             <div className='flex flex-row text-center mb-8 items-center'>
                 <button onClick={()=>{cambiarMes(-1)}}>
                     <BiSolidChevronLeft className="text-4xl"/>
