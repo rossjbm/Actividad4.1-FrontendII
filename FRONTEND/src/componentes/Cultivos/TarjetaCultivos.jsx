@@ -1,6 +1,8 @@
 import { Accordion } from "flowbite-react";
 
 function TarjetaCultivos({ cultivo, cultivoData }) {
+  console.log('soy cultivo',cultivo)
+  console.log('soy cultivoData',cultivoData)
   return (
     <>
       <div className="border-[3px] dark:bg-Marron-900 dark:border-Marron-900 border-Marron-400 py-8 px-2">
@@ -23,7 +25,7 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
               Día de Cosecha: No se que hacer
             </li>
             <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
-              Cantidad de Agua por Siembra: {cultivoData.riego.cantidadBaja}ml "Baja", {cultivoData.riego.cantidadMedia}ml "Media", {cultivoData.riego.cantidadAlta}ml "Alta"
+              Cantidad de Agua por Planta: De {cultivoData.riego.cantidadBaja}ml a {cultivoData.riego.cantidadAlta}ml
             </li>
             <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
               Fertilizante: {cultivo.fertilizante}
@@ -33,7 +35,7 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
                 Número de Siembras: {cultivo.numeroCultivos}
               </li>
               <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800 text-center">
-                Tamaño de Superficie: {cultivo.superficie}
+                Tamaño de Superficie: {cultivo.superficie} m2
               </li>
             </ul>
           </ul>
@@ -50,7 +52,7 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
                 <ul className="flex flex-col gap-2">
                   <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Días de Crecimiento: {cultivoData.vidaUtil.crecimiento} Dias</li>
                   <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Día de Floración: De {cultivoData.etapaFloracion.inicio} a {cultivoData.etapaFloracion.fin} días</li>
-                  <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Cantidad de Riego: {cultivoData.riego.frecuencia} vez cada día </li>
+                  <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Cantidad de Riego: {cultivoData.riego.frecuencia === 0 ? 'Todos los Días' : 'Cada '+cultivoData.riego.frecuencia+' días'}</li>
                   <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Días de Poda: Cada {cultivoData.poda.frecuencia} Dias </li>
                   <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Días de Fertilización: 1 vez cada {cultivoData.fertilizacion.frecuencia} días </li>
                   <li className="dark:text-white text-sm text-Verde-oscuro-800 font-texto">Humedad Ideal: {cultivoData.humedad.minima}% al {cultivoData.humedad.maxima}%</li>
@@ -58,7 +60,7 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
                 </ul>
 
                 <div>
-                  <h5 className="dark:text-white text-sm font-titulo mt-8 mb-4 text-Verde-oscuro-800 ">Plagas Comúnes:</h5>
+                  <h5 className="dark:text-white text-sm font-titulo mt-8 mb-4 text-Verde-oscuro-800 ">Plagas Comunes:</h5>
                   <ul className="px-8">
                     <li className="dark:text-white list-disc text-sm text-Verde-oscuro-800">{cultivoData.plagas}</li>
                   </ul>
