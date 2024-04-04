@@ -5,11 +5,11 @@ import { Routes, Route } from "react-router-dom";
 import {Encabezado} from "./componentes/globales/Encabezado/Encabezado";
 import { NavInferior } from "./componentes/globales/Encabezado/NavInferior";
 import { Pie } from "./componentes/globales/Pie/Pie";
-import { Landing } from "./paginas/Landing/Landing";
-import Cultivos from "./paginas/Cultivos/Cultivos";
-import { CalendarioGeneral } from "./paginas/Calendario/General"
-import FormularioCultivo from "./paginas/Recomendar/FormularioCultivo";
-import { Hoy } from "./paginas/Hoy/Hoy";
+import { Landing } from "./Paginas/Landing/Landing";
+import Cultivos from "./Paginas/Cultivos/Cultivos";
+import { CalendarioGeneral } from "./Paginas/Calendario/General"
+import FormularioCultivo from "./Paginas/Recomendar/FormularioCultivo";
+import { Hoy } from "./Paginas/Hoy/Hoy";
 
 
 export const Mostrar = React.createContext();
