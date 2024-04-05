@@ -38,6 +38,26 @@ export async function listarCultivosData() {
     }) 
 }
 
+export async function listarCultivosDataName(nombre) {
+    return fetch(`http://localhost:3000/cultivosData/nombre/${nombre}`, {
+        method: 'GET',
+        headers:{'Content-Type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.error) {
+            console.log('error', response.error);
+            throw response.error
+        }else{
+            console.log('exito', response)
+            return response.cultivoNombre;
+        } 
+    })
+    .catch ((error) => {
+        throw ("Error:", error)
+    }) 
+}
+
 export async function agregarCultivo(cultivo) {
     fetch(`http://localhost:3000/cultivos`, {
         method: 'POST',

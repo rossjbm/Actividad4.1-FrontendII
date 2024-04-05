@@ -1,8 +1,7 @@
 import { Accordion } from "flowbite-react";
 
 function TarjetaCultivos({ cultivo, cultivoData }) {
-  console.log('soy cultivo',cultivo)
-  console.log('soy cultivoData',cultivoData)
+
   return (
     <>
       <div className="border-[3px] dark:bg-Marron-900 dark:border-Marron-900 border-Marron-400 py-8 px-2">

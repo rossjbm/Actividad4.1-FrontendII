@@ -28,6 +28,20 @@ class cultivosControllers {
         }
     }
 
+    async listarCultivo(req, res, next) {
+        try {
+            const nombre = req.params.nombre
+            const data = await cultivosModels.find({nombre:nombre});
+            if (!data) {
+                return res.status('404').json({ error: "No existe el cultivo" })
+            }
+            return res.status('200').json({ cultivoNombre: data, mensaje: "Se ha conseguido el cultivo" })
+        } catch (error) {
+            console.log('Hubo algún error', error); // vemos error por consola
+            res.status('404').json({ "error": error }) //estado
+        }
+    }
+
     async agregar(req, res, next) {
         try {
             const { nombre, tiempo_crecimiento, cantidad_riego, dias_poda, plagas, dias_fertilizacion, cantidad_agua_minima, dia_floracion, humedad_ideal, temperatura_ideal } = req.body;
