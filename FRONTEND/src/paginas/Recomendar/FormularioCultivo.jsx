@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Alerta from '../../componentes/Recomendar/Alerta';
+import Alerta from '../../Componentes/Recomendar/Alerta';
 
 const FormularioCultivo = () => {
     const [cultivo, setCultivo] = useState('');

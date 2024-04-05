@@ -8,7 +8,7 @@ import {
   listarCultivosData,
 } from "../../peticiones/cultivos";
 import { Alert } from "flowbite-react";
-import TarjetaCultivos from "../../componentes/Cultivos/TarjetaCultivos";
+import TarjetaCultivos from "../../Componentes/Cultivos/TarjetaCultivos";
 
 function Cultivos() {
   const [darkMode, setDarkMode] = useState(
