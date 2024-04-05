@@ -6,6 +6,10 @@ import { Recomendar } from "../../Componentes/Hoy/Recomendar"
 import { listarCultivos } from "../../peticiones/cultivos";
 import { listarCultivosDataName } from "../../peticiones/cultivos";
 
+//iconos
+import { FaRegCheckSquare } from "react-icons/fa";
+import { ImCheckboxUnchecked } from "react-icons/im";
+
 export function Hoy(){
     const [cultivosUser, setCultivosUser] = useState([]);
     const [fechaHoy, setFechaHoy] = useState(new Date());
@@ -67,7 +71,10 @@ export function Hoy(){
                     // console.log('diasTotales', diasTotalesRef.current)
 
                     const resultado = {
-                        riego: riegoRef.current,
+                        riego: {
+                            tarea: riegoRef.current,
+                            estado: 'uncheck'
+                        },
                         diasTotales: diasTotalesRef.current,
                         nombre: cultivo.nombre
                     }
@@ -84,7 +91,7 @@ export function Hoy(){
     }, [cultivosUser]);
 
     //funciones
-    async function calcularDias(fecha1, fecha2, cont) {
+    async function calcularDias(fecha1, fecha2) {
         var cont = 0;
         for (let i = 0; fecha1 <= fecha2; i++) {
             fecha1.setDate(fecha1.getDate() + 1);
@@ -124,15 +131,54 @@ export function Hoy(){
         }
     }
 
+    function checkTarea(e, i){
+        e.preventDefault();
+        setTareasTodas(tareasTodas.map((tarea, index) => {
+            if (index === i) {
+                return {
+                    ...tarea,
+                    riego: {
+                        ...tarea.riego,
+                        estado: tarea.riego.estado === 'check' ? 'uncheck' : 'check'
+                    }
+                };
+            }
+            return tarea;
+        }));
+    }
+
     // console.log('soy cultivos', cultivosUser)
     console.log('soy tareasTotales', tareasTodas)
+    console.log(fechaHoy.toLocaleDateString())
     
     return(<>
         <div className="flex flex-col py-12 gap-8 items-center">
-            <h1 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center">Tus Tareas de Hoy</h1>
+            <h1 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center">Hoy es {fechaHoy.toLocaleDateString()} </h1>
 
             <Recomendar/>
-            {/* <div> xd {tareasTodas} </div> */}
+            
+            <section className="w-4/5">
+                <h2 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center">Todas tus Tareas de Hoy</h2>
+
+                <section className="p-6">
+                    <h3 className="text-2xl dark:text-white text-Verde-oscuro-800 font-titulo mb-8">Riego</h3>
+                    <ul className="dark:text-white text-Verde-oscuro-800 flex flex-col gap-4">
+                        {
+                            tareasTodas.map((tareariego, i) => {
+                                return(<>
+                                    <li key={i} className="text-xl flex gap-4 items-center">
+                                        <button 
+                                            onClick={(e) => checkTarea(e, i)}> 
+                                            {tareariego.riego.estado === 'check' ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                        </button>
+                                        <p className={tareariego.riego.estado === 'check' ? `line-through` : 'no-underline'}>Para {tareariego.nombre} regar {tareariego.riego.tarea}ml</p>
+                                    </li>
+                                </>)
+                            })
+                        }
+                    </ul>
+                </section>
+            </section>
         </div>
     
     </>)
