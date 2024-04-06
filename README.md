@@ -17,7 +17,7 @@ Asignatura Frontend II
 
 
 <h2>Descripción</h2>
-<b>Link del video explicativo: https://youtu.be/hr67dl9tamg</b><br>
+<b>Link del video explicativo: https://www.youtube.com/watch?v=hPbT-6pyuoI</b><br>
 <b>Link del Diseño en Figma:</b> https://www.figma.com/file/CRu8yikZ3KNg9qNZNKk3cF/Proyecto-4.1-Frontend-II?type=design&node-id=0-1&mode=design&t=IBsO1naxaMBavOnV-0<br>
 <b>Link de Herramienta para Gestionar el Proyecto:</b> https://buttercup-squirrel-32a.notion.site/Proyecto-RigoPlant-52ea4ea49374451a95ab58ec6d66a86e?pvs=4<br>
 
