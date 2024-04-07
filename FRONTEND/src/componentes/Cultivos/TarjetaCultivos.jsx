@@ -4,7 +4,7 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
 
   return (
     <>
-      <div className="border-[3px] dark:bg-Marron-900 dark:border-Marron-900 border-Marron-400 py-8 px-2">
+      <div className="border-[3px] dark:bg-Marron-900 dark:border-Marron-900 h-full border-Marron-400 py-8 px-2">
         <div className="flex flex-col gap-4">
           <h3 className="dark:text-white text-2xl font-titulo font-semibold text-Verde-oscuro-800 text-center">
             {cultivo.nombre}

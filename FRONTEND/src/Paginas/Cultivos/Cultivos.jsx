@@ -22,10 +22,10 @@ function Cultivos() {
   const [seleccionadoData, setSeleccionadoData] = useState(null);
   const [alertaCorrecta, setAlertaCorrecta] = useState(false);
   const [alertaError, setAlertaError] = useState(false);
-  const [usuarioId, setUsuarioId] = useState("66087d688f59b6724beff8e5"); // Ejemplo
+  const [usuarioId, setUsuarioId] = useState(localStorage.getItem("usuarioId")); // Ejemplo
   const [state, setState] = useState({
     nombre: "",
-    usuarioId: "66087d688f59b6724beff8e5", //Ejemplo
+    usuarioId: usuarioId, //Ejemplo
     fertilizante: "",
     plantacion: "",
     superficie: "",
@@ -58,6 +58,11 @@ function Cultivos() {
     console.log(arrayCultivos);
     setData(arrayCultivos);
   }, [cultivos]);
+
+  async function actualizandoAdd() {
+    const data = await listarCultivos(usuarioId);
+    setCultivos(data);
+  }
 
   function cargarCultivo(id) {
     for (let i = 0; i < cultivos.length; i++) {
@@ -98,7 +103,9 @@ function Cultivos() {
     }
 
     const respuesta = await agregarCultivo(state);
+    console.log(respuesta)
     if (respuesta === undefined) {
+      actualizandoAdd()
       setOpenModal(false);
       setAlertaCorrecta(!alertaCorrecta);
     } else {
@@ -209,7 +216,7 @@ function Cultivos() {
                 }
               </div>
 
-              <div className="md:grid md:grid-cols-2 gap-4 lg:grid-cols-3">
+              <div className="md:grid md:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-3">
                 {seleccionado === null ? (
                   data.map((cultivo, id) => (
                     <>
