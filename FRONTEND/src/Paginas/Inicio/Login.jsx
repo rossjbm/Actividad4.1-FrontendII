@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 function Login() {
 
@@ -108,7 +109,10 @@ function Login() {
                             />
                         </div>
 
-                        <span className="text-center text-Verde-oscuro-800 dark:text-white">¿Aún no has iniciado sesión? <a className="underline">Regístrate</a></span>
+                        <div className="flex justify-center items-center space-x-2">
+                        <span className="text-black dark:text-white">¿Aún no has iniciado sesión?</span>
+                        <Link to="/registro" className="hover:underline text-black dark:text-white">Registrate</Link>
+                        </div>
                         <button type="submit" className="rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 font-bold py-2 px-8 hover:bg-Verde-claro-800">Iniciar</button>
                     </form>
                 </div>
