@@ -60,7 +60,7 @@ const RegistroFormulario = () => {
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-fondoLanding bg-cover bg-top">
-        <div className="max-w-screen-xl p-8 rounded-lg shadow-md md:w-96 border-2 border-white rounded-full bg-Marron-400 dark:bg-Verde-oscuro-800">
+        <div className="w-[90vw] md:w-[60vw] xl:w-[40vw] p-8 bg-Marron-400 dark:bg-Verde-oscuro-800 rounded-2xl border-[3px] flex flex-col gap-6 border-Verde-oscuro-800 dark:border-white">
         <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white font-titulo">Registrarse</h2>
 
         <form onSubmit={handleRegistro} className="space-y-6">
