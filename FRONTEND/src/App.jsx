@@ -12,6 +12,7 @@ import FormularioCultivo from "./Paginas/Recomendar/FormularioCultivo";
 import { Hoy } from "./Paginas/Hoy/Hoy";
 import Login from "./Paginas/Inicio/Login";
 import ErrorLogin from "./Paginas/Inicio/ErrorLogin";
+import RegistroFormulario from "./Paginas/Inicio/Registro";
 
 
 export const Mostrar = React.createContext();
@@ -57,6 +58,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/iniciosesion" element={<Login />} />
+              <Route path="/registro" element={<RegistroFormulario/>} />
               <Route path="/tuscultivos" element={isLogin ? (<ErrorLogin />) : (<Cultivos />)} />
               <Route path="/calendario" element={isLogin ? (<ErrorLogin />) : <CalendarioGeneral />} />
               <Route path="/hoy" element={isLogin ? (<ErrorLogin />) : <Hoy />} />
