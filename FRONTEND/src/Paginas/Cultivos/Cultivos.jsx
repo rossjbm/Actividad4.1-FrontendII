@@ -9,6 +9,7 @@ import {
 } from "../../peticiones/cultivos";
 import { Alert } from "flowbite-react";
 import TarjetaCultivos from "../../Componentes/Cultivos/TarjetaCultivos";
+import Loader from "../../Componentes/globales/Loader/Loader";
 
 function Cultivos() {
   const [darkMode, setDarkMode] = useState(
@@ -31,6 +32,15 @@ function Cultivos() {
     superficie: "",
     numeroCultivos: "",
   });
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoaded(true);
+    }, 2000); // Tiempo en milisegundos para simular la carga
+  
+    return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
+  }, []);
 
   useEffect(() => {
     async function actualizarCultivos() {
@@ -115,6 +125,9 @@ function Cultivos() {
 
   return (
     <>
+      {!loaded ? (
+        <Loader /> // Muestra el loader mientras se simula la carga
+      ) : (
       <section className="py-12 px-4 min-h-[100vh] ">
         {alertaCorrecta ? (
           <>
@@ -394,8 +407,9 @@ function Cultivos() {
           </Modal.Body>
         </Modal>
       </section>
-    </>
-  );
+      )}
+  </>
+);
 }
 
 export default Cultivos;
