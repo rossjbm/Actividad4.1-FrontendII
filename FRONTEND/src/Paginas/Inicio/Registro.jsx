@@ -65,19 +65,19 @@ const RegistroFormulario = () => {
 
         <form onSubmit={handleRegistro} className="space-y-6">
             <label htmlFor="nombreCompleto" className="block text-black dark:text-white font-titulo">Nombre Completo</label>
-            <input type="text" id="nombreCompleto" value={nombreCompleto} onChange={(e) => setNombreCompleto(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black dark:text-white" />
+            <input type="text" id="nombreCompleto" value={nombreCompleto} onChange={(e) => setNombreCompleto(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black" />
 
             <label htmlFor="usuarioUnico" className="block text-black dark:text-white font-titulo">Usuario Único</label>
-            <input type="text" id="usuarioUnico" value={usuarioUnico} onChange={(e) => setUsuarioUnico(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black dark:text-white" />
+            <input type="text" id="usuarioUnico" value={usuarioUnico} onChange={(e) => setUsuarioUnico(e.target.value)} className="input w-full h-12 rounded-md font-texto text-dark" />
 
             <label htmlFor="correoElectronico" className="block text-black dark:text-white font-titulo">Correo Electrónico</label>
-            <input type="email" id="correoElectronico" value={correoElectronico} onChange={(e) => setCorreoElectronico(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black dark:text-white" />
+            <input type="email" id="correoElectronico" value={correoElectronico} onChange={(e) => setCorreoElectronico(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black" />
 
             <label htmlFor="contrasena" className="block text-black dark:text-white font-titulo">Contraseña</label>
-            <input type="password" id="contrasena" value={contrasena} onChange={(e) => setContrasena(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black dark:text-white" />
+            <input type="password" id="contrasena" value={contrasena} onChange={(e) => setContrasena(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black " />
 
             <label htmlFor="confirmarContrasena" className="block text-black dark:text-white font-titulo">Confirmar Contraseña</label>
-            <input type="password" id="confirmarContrasena" value={confirmarContrasena} onChange={(e) => setConfirmarContrasena(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black dark:text-white" />
+            <input type="password" id="confirmarContrasena" value={confirmarContrasena} onChange={(e) => setConfirmarContrasena(e.target.value)} className="input w-full h-12 rounded-md font-texto text-black" />
 
             <label htmlFor="Ubicacion" className="block text-black dark:text-white font-titulo">Selecciona tu ubicación</label>
             <div ref={mapRef} style={{ width: '100%', height: '300px' }} />
