@@ -117,12 +117,14 @@ const RegistroFormulario = () => {
 
             {/* Mostrar la alerta de éxito si se activa */}
             {mostrarAlertaExito && (
+                <Link to="/iniciosesion">
                 <Alerta
                     titulo="Registro Exitoso"
                     mensaje="¡Tu registro ha sido exitoso!"
                     tipo="exito"
                     onClose={() => setMostrarAlertaExito(false)}
                 />
+                </Link>
             )}
 
             {/* Mostrar la alerta de campos incompletos si se activa */}
