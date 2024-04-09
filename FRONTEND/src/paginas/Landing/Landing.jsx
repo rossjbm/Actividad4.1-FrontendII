@@ -31,7 +31,7 @@ export function Landing(){
                 <div className="flex flex-col items-center text-center py-8 px-12 gap-5">
                     <p className="text-xl">¿Quieres mantener tus cultivos saludables y bien cuidados? <b>RigoPlant</b> es lo que necesitas. </p>
                     <p className="text-lg">Nuestra aplicación es la mejor opción para el riego eficiente de tus cultivos, diseñada para ayudarte a maximizar la productividad de tus plantas.</p>
-                    <Link to={'/tuscultivos'}>
+                    <Link to={'/iniciosesion'}>
                         <button className="border-2 py-2 px-10 text-2xl font-titulo mt-10 hover:bg-Verde-oscuro-400 hover:border-Verde-oscuro-400">¡Comenzar!</button>
                     </Link>
                 </div>
