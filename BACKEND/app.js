@@ -9,8 +9,8 @@ const cors = require('cors');
 //base de datos
 const db = require('./conexion/conexion');
 
-var cultivos_usuarios = require('./routes/cultivos_usuarios.routes');
-var cultivos = require('./routes/cultivos.routes');
+var cultivos_usuarios = require('./routes/cultivosUser.routes');
+var cultivos = require('./routes/cultivosData.routes');
 var usuarios = require('./routes/usuarios.routes');
 
 var app = express();

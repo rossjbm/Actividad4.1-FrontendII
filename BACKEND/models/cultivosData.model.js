@@ -16,7 +16,7 @@ const cultivosDataSchema = new mongoose.Schema(
             required: true
         },
         plagas: {
-            type: String,
+            type: Array,
             required: true
         },
         vidaUtil: {

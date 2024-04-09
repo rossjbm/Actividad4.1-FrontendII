@@ -44,13 +44,13 @@ class cultivosControllers {
 
     async agregar(req, res, next) {
         try {
-            const { nombre, tiempo_crecimiento, cantidad_riego, dias_poda, plagas, dias_fertilizacion, cantidad_agua_minima, dia_floracion, humedad_ideal, temperatura_ideal } = req.body;
+            const { cultivo, nombre, tiempo_crecimiento, cantidad_riego, dias_poda, plagas, dias_fertilizacion, cantidad_agua_minima, dia_floracion, humedad_ideal, temperatura_ideal } = req.body;
             const data = {
-                nombre, tiempo_crecimiento, cantidad_riego, dias_poda, plagas, dias_fertilizacion, cantidad_agua_minima, dia_floracion, humedad_ideal, temperatura_ideal
+                cultivo, nombre, tiempo_crecimiento, cantidad_riego, dias_poda, plagas, dias_fertilizacion, cantidad_agua_minima, dia_floracion, humedad_ideal, temperatura_ideal
             }
-            const cultivo = await cultivosModels.create(data);
-            if (cultivo) {
-                return res.status('201').json({cultivo: cultivo, mensaje: "Agregado el Cultivo"})
+            const agregado = await cultivosModels.create(data);
+            if (agregado) {
+                return res.status('201').json({cultivo: agregado, mensaje: "Agregado el Cultivo"})
             }
             return res.status('404').json({ "error": "No se agrego el cultivo" })
         } catch (error) {
