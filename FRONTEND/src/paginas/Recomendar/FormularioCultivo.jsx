@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Alerta from '../../Componentes/Recomendar/Alerta';
+import Loader from "../../Componentes/globales/Loader/Loader";
 
 const FormularioCultivo = () => {
     const [cultivo, setCultivo] = useState('');
@@ -10,7 +11,7 @@ const FormularioCultivo = () => {
     const [tituloAlerta, setTituloAlerta] = useState('');
     const [humedad, setHumedad] = useState(null);
     const [temperatura, setTemperatura] = useState(null);
-
+    const [loaded, setLoaded] = useState(false);
     const opcionesCultivo = ['Zanahoria', 'Papa', 'Tomate', 'Fresas', 'Pimentón', 'Lechuga'];
 
     const rangosCultivo = {
@@ -21,6 +22,15 @@ const FormularioCultivo = () => {
         Pimentón: { humedadMin: 50, humedadMax: 70, temperaturaMin: 20, temperaturaMax: 25 },
         Lechuga: { humedadMin: 60, humedadMax: 80, temperaturaMin: 15, temperaturaMax: 20 },
     };
+
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setLoaded(true);
+      }, 2000); // Tiempo en milisegundos para simular la carga
+    
+      return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
+    }, []);
 
     useEffect(() => {
         const obtenerDatosAPI = async () => {
@@ -84,6 +94,10 @@ const FormularioCultivo = () => {
     };
 
     return (
+        <>
+        {!loaded ? (
+          <Loader /> // Muestra el loader mientras se simula la carga
+        ) : (
         <div className="flex justify-center items-center h-screen">
             <div className="p-4 rounded-lg shadow-md w-96 bg-Marron-400 dark:bg-Verde-oscuro-800">
                 <h2 className="text-xl mb-4 text-center font-titulo dark:text-white">¿Recomendable Cultivar?</h2>
@@ -103,9 +117,6 @@ const FormularioCultivo = () => {
                     <label htmlFor="temperatura" className="block font-titulo dark:text-white">Temperatura Actual</label>
                     <input type="number" id="temperatura" value={temperatura !== null ? temperatura : ''} onChange={(e) => setTemperatura(e.target.value)} className="input w-full rounded-md  font-texto dark:bg-Verde-claro-600" />
 
-                    <label htmlFor="ubicacion" className="block font-titulo dark:bg-Verde-oscuro-800 dark:text-white">Localización</label>
-                    <input type="text" id="ubicacion" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} className="input w-full rounded-md font-texto dark:bg-Verde-claro-600" />
-
                     <div className="flex justify-center">
                         <button type="submit" className="btn btn-primary btn-outline bg-Verde-oscuro-400 border-2 border-Verde-oscuro-400 dark:border-Marron-900     px-4 py-2 rounded-lg text-white font-titulo dark:bg-Marron-900">Guardar</button>
                     </div>
@@ -114,8 +125,10 @@ const FormularioCultivo = () => {
                 {mostrarAlerta && <Alerta titulo={tituloAlerta} mensaje={mensajeAlerta} tipo={tipoAlerta} onClose={handleCloseAlert} />}
             </div>
         </div>
+      )}
+    </>
     );
-};
+}
 
 export default FormularioCultivo;
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-
+import Loader from "../../Componentes/globales/Loader/Loader";
 import { Recomendar } from "../../Componentes/Hoy/Recomendar"
 
 //llamados a back
@@ -11,6 +11,7 @@ import { FaRegCheckSquare } from "react-icons/fa";
 import { ImCheckboxUnchecked } from "react-icons/im";
 
 export function Hoy(){
+    const [loaded, setLoaded] = useState(false);
     const [cultivosUser, setCultivosUser] = useState([]);
     const [fechaHoy, setFechaHoy] = useState(new Date());
     const [temperaturaHoy, setTemperaturaHoy] = useState(15);
@@ -25,6 +26,14 @@ export function Hoy(){
     const podaRef = useRef()
     const fertilizanteRef = useRef()
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+          setLoaded(true);
+        }, 2000); // Tiempo en milisegundos para simular la carga
+      
+        return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
+      }, []);
+      
     useEffect(() => {
         async function guardarCultivos() {
             const cultivos = await listarCultivos(usuarioId);
@@ -151,7 +160,11 @@ export function Hoy(){
     console.log('soy tareasTotales', tareasTodas)
     console.log(fechaHoy.toLocaleDateString())
     
-    return(<>
+    return(
+        <>
+        {!loaded ? (
+          <Loader /> // Muestra el loader mientras se simula la carga
+        ) : (
         <div className="flex flex-col py-12 gap-8 items-center">
             <h1 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center">Hoy es {fechaHoy.toLocaleDateString()} </h1>
 
@@ -180,6 +193,7 @@ export function Hoy(){
                 </section>
             </section>
         </div>
-    
-    </>)
+      )}
+      </>
+      );
 }
