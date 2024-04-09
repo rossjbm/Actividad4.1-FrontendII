@@ -34,6 +34,7 @@ class cultivos_usuariosControllers {
     async listarUna(req, res, next) {
         try {
             const id = req.params.id
+            console.log(typeof(id))
             const data = await cultivosUser.findById(id);
             if (!data) {
                 return res.status('404').json({ error: "No existe el cultivo" })
@@ -47,19 +48,103 @@ class cultivos_usuariosControllers {
 
     async agregar(req, res, next) {
         try {
-            const { nombre, plantacion, superficie, numeroCultivos, fertilizante, usuarioId} = req.body;
+            const { nombre, cultivo, plantacion, superficie, numeroCultivos, fertilizante, usuarioId} = req.body;
             if (numeroCultivos < 0) {
                 res.status('404').json({ "error": "Los cultivos deben ser minimo 1" })
             }
             if (superficie < 0) {
                 res.status('404').json({ "error": "La superficie deben ser minimo 1" })
             }
-            const data = {
-                nombre, plantacion, superficie, numeroCultivos, fertilizante, usuarioId
+
+            var regar;
+            var podar;
+            var fertilizar;
+            var infoCultivo;
+
+            try {
+                const data = await cultivosData.find({nombre: cultivo})
+                infoCultivo = data[0]
+                console.log(infoCultivo)
+            } catch (error) {
+                res.status('404').json({ "error": "Error al obtener la información del Cultivo" })
             }
-            const cultivo = await cultivosUser.create(data);
-            if (cultivo) {
-                return res.status('201').json({cultivoCreado: cultivo, mensaje: "Agregado el Cultivo"})
+
+            var fin = infoCultivo.vidaUtil.muerte
+
+            //agregar tareas de riego
+            function agregarRiego() {
+                var dias = []
+                var hecho = []
+                for ( let dia=0; dia < fin; dia++) {
+                    if (dia % infoCultivo.riego.frecuencia === 0 || infoCultivo.riego.frecuencia === 0) {
+                        dias = [...dias, dia]
+                    }
+                }
+                for (let i=0; i<dias.length; i++) {
+                    hecho = [...hecho, 0]
+                }
+                var tareas = {dias: dias, hecho: hecho}
+                return tareas
+            }
+
+            //agregar tareas de poda
+            function agregarPoda() {
+                var dias = []
+                var hecho = []
+                if (infoCultivo.poda.mensaje === "Necesario") {
+                    for ( let dia=infoCultivo.poda.inicio; dia < fin; dia++) {
+                        if (dia % infoCultivo.poda.frecuencia === 0 || infoCultivo.poda.frecuencia === 0) {
+                            dias = [...dias, dia]
+                        }
+                    }
+                    for (let i=0; i<dias.length; i++) {
+                        hecho = [...hecho, 0]
+                    }
+                    var tareas = {dias: dias, hecho: hecho}
+                    return tareas
+                } else {
+                    return false
+                }
+
+            }
+
+            //agregar tareas de fertilizante
+            function agregarFertilizante() {
+                var dias = []
+                var hecho = []
+                if (fertilizante === 'Si') {
+                    for ( let dia=0; dia < fin; dia++) {
+                        if (dia % infoCultivo.fertilizacion.frecuencia === 0 || infoCultivo.fertilizacion.frecuencia === 0) {
+                            dias = [...dias, dia]
+                        }
+                    }
+                    for (let i=0; i<dias.length; i++) {
+                        hecho = [...hecho, 0]
+                    }
+                    var tareas = {dias: dias, hecho: hecho}
+                    return tareas
+                } else {
+                    return false
+                }
+            }
+
+            regar = agregarRiego()
+            console.log('soy regar',regar)
+
+            podar = agregarPoda()
+            console.log('soy podar',podar)
+
+            fertilizar = agregarFertilizante()
+            console.log('soy fertilizar', fertilizar)
+
+            const data = {
+                nombre, cultivo, plantacion, superficie, numeroCultivos, fertilizante, usuarioId, regar, podar, fertilizar
+            }
+
+            console.log(data)
+            const creado = await cultivosUser.create(data);
+            if (creado) {
+                return res.status('201').json({cultivoCreado: creado, mensaje: "Agregado el Cultivo"})
             }
             return res.status('404').json({ "error": "No se agrego el cultivo" })
         } catch (error) {
@@ -88,71 +173,63 @@ class cultivos_usuariosControllers {
     //Agregar Pesticida
     async agregarPesticida(req, res, next) {
         try {
-            const { para, contagio, cultivo, nombre} = req.body;  //cultivo = Tomate  ;  nombre = Lote 3 Tomates
-            console.log(para, cultivo)
+            const { para, id} = req.body; //para = plaga; id = id del cultivo del usuario
 
-            var datosPlaga ;
-            var diaInicio ;
-            var pesticidaTarea = [];
-            var hechos = [];
-            var cantidad;
+            console.log(id)
 
-            try {
-                const datos = await cultivosData.find({nombre: cultivo})
-                // console.log(datos)
-                const datosCultivo = datos[0]
-
-                //hallamos la información del determinado tipo de plaga
-                for (let i=0; i < datosCultivo.plagas.length ; i++) {
-                    // console.log('soy', datosCultivo.plagas[i].tipo)
-                    if(datosCultivo.plagas[i].tipo === para) {
-                        datosPlaga = datosCultivo.plagas[i]
-                    }
-                }
-                // console.log("plaga",datosPlaga.pesticida)
-            } catch (error) {
-                res.status('404').json({ "error": "No se pudo acceder a los datos del cultivo" })
-            }
+            var datosPlaga ;  //guardar los datos de la plaga determinada
+            var datosCultivo ;  //guardar la data del cultivo
+            var datosCultivosUser ;  //guardar info del cultivo del usuario al que le cayó la plaga
+            var diaInicio ;  //numero de dia que cayó la plaga en base al día de vida del cultivo
+            var pesticidaTarea = [];  //días donde hay que hechar pesticida
+            var hechos = [];  //checks de las tareas
 
             try {
-                console.log('estamos en cultivos de usuario')
-                const datosCultivosUser = await cultivosUser.find({nombre: nombre})
-                // console.log(datosCultivosUser[0])
+                datosCultivosUser = await cultivosUser.findById(id)
+                const fecha1 = new Date(datosCultivosUser.plantacion)
+                const fecha2 = new Date()
 
-                const fecha1 = new Date(datosCultivosUser[0].plantacion)
-                const fecha2 = new Date(contagio)
+                console.log(fecha2)
 
                 for (let i=0; fecha1<=fecha2; i++){
                     fecha1.setDate(fecha1.getDate() + 1);
                     diaInicio = i
                 }
-                // console.log('dia de inicio de pesticida', diaInicio)
             } catch (error) {
                 res.status('404').json({ "error": "No se pudo acceder a los datos del cultivo del usuario" })
             }
 
-            //guardar cantidad
-            console.log(datosPlaga.cantidad)
+            try {
+                const datos = await cultivosData.find({nombre: datosCultivosUser.cultivo})
+                datosCultivo = datos[0]
+
+                //hallamos la información del determinado tipo de plaga
+                for (let i=0; i < datosCultivo.plagas.length ; i++) {
+                    if(datosCultivo.plagas[i].tipo === para) {
+                        datosPlaga = datosCultivo.plagas[i]
+                    }
+                }
+            } catch (error) {
+                res.status('404').json({ "error": "No se pudo acceder a los datos del cultivo" })
+            }
+
+            console.log(datosCultivo.vidaUtil.muerte)
 
             //guardar días de echar fertilizante
             var cont = 0
-            for (let i=diaInicio; cont < datosPlaga.durante; i++) {
+            for (let i=diaInicio; cont < datosPlaga.durante && i < datosCultivo.vidaUtil.muerte; i++) {
                 if(i % datosPlaga.frecuencia === 0) {
                     pesticidaTarea =  [...pesticidaTarea, i];
                     cont++
                 }
             }
 
-            // console.log(pesticidaTarea)
-
             //guardar unchecks de fertilizante
             for (let i=0; i<pesticidaTarea.length ; i++) {
                 hechos =  [...hechos, 0];
             }
 
-            // console.log(hechos)
-
-            const resultado = await cultivosUser.updateOne({nombre: nombre}, {$set:{fumigar: {dias: pesticidaTarea, hechos: hechos, cantidad: datosPlaga.cantidad, medida: datosPlaga.medida}}})
+            const resultado = await cultivosUser.findByIdAndUpdate(id, {$set:{fumigar: {dias: pesticidaTarea, hechos: hechos, cantidad: datosPlaga.cantidad, medida: datosPlaga.medida}}})
 
             console.log(resultado)
             return res.status('200').json({ "mensaje": `Se ha registrado correctamente la plaga. A partir de mañana inicia su tratamiento con ${datosPlaga.pesticida}` })
