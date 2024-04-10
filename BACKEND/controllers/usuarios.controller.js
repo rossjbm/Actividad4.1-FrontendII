@@ -1,6 +1,8 @@
 const usuariosModels = require("../models/usuarios.model");
 const autenticacionPorHeader = require("./jwt/autenticacion");
 const crearToken = require("./jwt/crear");
+const bcryptjs = require("bcryptjs")
+
 
 class usuariosControllers {
     async listarUna(req, res, next) {
@@ -62,6 +64,43 @@ class usuariosControllers {
             console.log('Hubo algún error', error); // vemos error por consola
             res.status(404).json({ "error": error }) //estado
         }
+    }
+
+    async registro(req, res, next) {
+        var {nombreCompleto, usuarioUnico, correoElectronico, contrasena, confirmarContrasena, latitud, longitud} = req.body
+
+        try {
+            if (!nombreCompleto || !usuarioUnico || !correoElectronico || !contrasena || !confirmarContrasena || !latitud || !longitud) {
+                res.status(404).json({ "error": 'Debes ingresar todos los Datos reuqeridos' })
+            }
+            try {
+                const db = await usuariosModels.find({'correoElectronico':correoElectronico});
+                if (db.length != 0) {
+                    res.status(404).json({ "error": 'Ese correo ya esta en uso' })
+                }
+            } catch (error) {
+                console.log('Hubo algún error', error); // vemos error por consola
+                res.status(404).json({ "error": error }) //estado
+            }
+    
+            console.log("contraseña:", contrasena)
+            var contrasenaNueva = await bcryptjs.hash(contrasena, 8);
+            contrasena = contrasenaNueva
+            console.log("contraseña:", contrasena)
+
+
+            const correo = correoElectronico
+
+            const documento = {nombreCompleto, usuarioUnico, correo, contrasena, latitud, longitud}
+            await usuariosModels.create(documento);
+            console.log(documento)
+            res.status('200').json({"exito":"Se ha registrado correctamente"})
+
+        } catch(error) {
+            res.status('404').json({"error":"No se Pudo Registrar"})
+        }
+
+
     }
     
 }

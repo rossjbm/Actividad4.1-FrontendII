@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Alerta from '../../Componentes/Recomendar/Alerta';
+import { agregarUsuario } from '../../peticiones/usuarios';
 
 const RegistroFormulario = () => {
     const [nombreCompleto, setNombreCompleto] = useState('');
@@ -8,7 +9,8 @@ const RegistroFormulario = () => {
     const [correoElectronico, setCorreoElectronico] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [confirmarContrasena, setConfirmarContrasena] = useState('');
-    const [ubicacion, setUbicacion] = useState({ latitud: null, longitud: null });
+    const [latitud, setLatitud] = useState('');
+    const [longitud, setLongitud] = useState('');
     const [datosRegistrados, setDatosRegistrados] = useState(null);
     const [mostrarAlertaExito, setMostrarAlertaExito] = useState(false);
     const [mostrarAlertaError, setMostrarAlertaError] = useState(false);
@@ -28,20 +30,20 @@ const RegistroFormulario = () => {
         });
         // Agrega un evento de clic en el mapa para obtener la ubicación
         map.addListener('click', (e) => {
-            const latitud = e.latLng.lat();
-            const longitud = e.latLng.lng();
-            setUbicacion({ latitud, longitud });
+            setLatitud(e.latLng.lat())
+            setLongitud(e.latLng.lng());
+            // setUbicacion({ latitud, longitud });
         });
 
         // Asigna el mapa a la referencia
         mapRef.current = map;
     }, []);
 
-    const handleRegistro = (e) => {
+    const handleRegistro = async (e) => {
         e.preventDefault();
 
         // Validar que todos los campos estén llenos
-        if (!nombreCompleto || !usuarioUnico || !correoElectronico || !contrasena || !confirmarContrasena || !ubicacion.latitud || !ubicacion.longitud) {
+        if (!nombreCompleto || !usuarioUnico || !correoElectronico || !contrasena || !confirmarContrasena || !latitud || !longitud) {
             // Mostrar alerta de campos incompletos
             setMostrarAlertaCampos(true);
             return;
@@ -54,6 +56,7 @@ const RegistroFormulario = () => {
             return;
         }
 
+
         // Simula un registro exitoso
         const datos = {
             nombreCompleto,
@@ -61,21 +64,37 @@ const RegistroFormulario = () => {
             correoElectronico,
             contrasena,
             confirmarContrasena,
-            ubicacion,
+            latitud,
+            longitud
         };
-        setDatosRegistrados(datos);
+        console.log('datos enviar', datos)
+        // setDatosRegistrados(datos);
+
+        try {
+            const agregar = await agregarUsuario(datos)
+            console.log(agregar)
+
+            setNombreCompleto('');
+            setUsuarioUnico('');
+            setCorreoElectronico('');
+            setContrasena('');
+            setConfirmarContrasena('');
+            setLatitud('');
+            setLongitud('');
+
+            return setMostrarAlertaExito(true);
+
+        } catch (error) {
+            setMostrarAlertaError(true)
+            throw error
+        }
 
         // Limpia los campos después del registro
-        setNombreCompleto('');
-        setUsuarioUnico('');
-        setCorreoElectronico('');
-        setContrasena('');
-        setConfirmarContrasena('');
-        setUbicacion({ latitud: null, longitud: null });
+        
 
         // Muestra la alerta de éxito
-        setMostrarAlertaExito(true);
-        console.log(datos);
+        
+        // console.log(datos);
     };
 
 
@@ -144,6 +163,16 @@ const RegistroFormulario = () => {
                     mensaje="Las contraseñas no coinciden. Por favor, verifica tus contraseñas."
                     tipo="error"
                     onClose={() => setMostrarAlertaContrasena(false)}
+                />
+            )}
+
+            {/* Mostrar la alerta de contraseñas no coinciden si se activa */}
+            {mostrarAlertaError && (
+                <Alerta
+                    titulo="Ocurrió un Error"
+                    mensaje="Vuelve a Intentarlo."
+                    tipo="error"
+                    onClose={() => setMostrarAlertaError(false)}
                 />
             )}
         </div>
