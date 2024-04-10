@@ -13,7 +13,8 @@ import { Hoy } from "./Paginas/Hoy/Hoy";
 import Login from "./Paginas/Inicio/Login";
 import ErrorLogin from "./Paginas/Inicio/ErrorLogin";
 import RegistroFormulario from "./Paginas/Inicio/Registro";
-
+import CerrarSesion from "./Paginas/Perfil/BotonSesion";
+import Perfil from "./Paginas/Perfil/Perfil";
 
 export const Mostrar = React.createContext();
 export const Tema = React.createContext();
@@ -62,7 +63,7 @@ function App() {
               <Route path="/tuscultivos" element={isLogin ? (<ErrorLogin />) : (<Cultivos />)} />
               <Route path="/calendario" element={isLogin ? (<ErrorLogin />) : <CalendarioGeneral />} />
               <Route path="/hoy" element={isLogin ? (<ErrorLogin />) : <Hoy />} />
-              <Route path="/perfil" element={isLogin ? (<ErrorLogin />) : <h1>SOY PERFIL</h1>} />
+              <Route path="/perfil" element={<CerrarSesion isLogin={isLogin} setIsLogin={setIsLogin}/>} />
               <Route path="/condiciones" element={isLogin ? (<ErrorLogin />) : <FormularioCultivo />} />
               <Route path="*" element={<h1>SOY ERROR</h1>} />
             </Routes>
