@@ -252,143 +252,150 @@ export function Hoy(){
             <Recomendar/>
 
             <h2 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center mt-10">Todas tus Tareas de Hoy</h2>
-            <section className="w-full md:w-11/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7">
+            {
+                tareasRiego.length > 0 || tareasFertilizante.length > 0 || tareasPesticida.length > 0 || tareasPoda.length > 0 ?
+                <section className="w-full md:w-11/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7">
 
-                {
-                    tareasRiego.length > 0 ?
-                    <section className="pb-8 pt-4">
-                        <Accordion collapseAll className="border-none w-full">
-                            <Accordion.Panel defaultOpen className="border-none ">
-                                <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
-                                    Riego:
-                                </Accordion.Title>
-                                <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
-                                    <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
-                                        {
-                                            tareasRiego.map((p, i) => {
-                                                // console.log('soy p', p);
-                                                return (
-                                                    <>
-                                                        <li key={i} className="text-lg flex gap-4 items-center">
-                                                            <button 
-                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'regar', p.estado[1], tareasRiego, setTareasRiego)}> 
-                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                            </button>
-                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para "{p.nombre}" regar {p.cantidad} ml</p>
-                                                        </li> 
-                                                    </>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </Accordion.Content>
-                            </Accordion.Panel>
-                        </Accordion>
+                    {
+                        tareasRiego.length > 0 ?
+                        <section className="pb-8 pt-4">
+                            <Accordion collapseAll className="border-none w-full">
+                                <Accordion.Panel defaultOpen className="border-none ">
+                                    <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
+                                        Riego:
+                                    </Accordion.Title>
+                                    <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
+                                        <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
+                                            {
+                                                tareasRiego.map((p, i) => {
+                                                    // console.log('soy p', p);
+                                                    return (
+                                                        <>
+                                                            <li key={i} className="text-lg flex gap-4 items-center">
+                                                                <button 
+                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'regar', p.estado[1], tareasRiego, setTareasRiego)}> 
+                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                                </button>
+                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para "{p.nombre}" regar {p.cantidad} ml</p>
+                                                            </li> 
+                                                        </>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                    </Accordion.Content>
+                                </Accordion.Panel>
+                            </Accordion>
+                            
+                        </section> : null
+                    }
+
+                    {
+                        tareasPoda.length > 0 ?
+                        <section className="pb-8 pt-4">
+                            <Accordion collapseAll className="border-none w-full">
+                                <Accordion.Panel className="border-none ">
+                                    <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
+                                        Podar:
+                                    </Accordion.Title>
+                                    <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
+                                        <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
+                                            {
+                                                tareasPoda.map((p, i) => {
+                                                    console.log('soy p', p);
+                                                    return (
+                                                        <>
+                                                            <li key={i} className="text-xl flex gap-4 items-center">
+                                                                <button 
+                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'podar', p.estado[1], tareasPoda, setTareasPoda)}> 
+                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                                </button>
+                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre} ml</p>
+                                                            </li> 
+                                                        </>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                    </Accordion.Content>
+                                </Accordion.Panel>
+                            </Accordion>
+                            
+                        </section> : null
+                    }
+
+                    {
+                        tareasFertilizante.length > 0 ?
+                        <section className="pb-8 pt-4">
+                            <Accordion collapseAll className="border-none w-full">
+                                <Accordion.Panel className="border-none ">
+                                    <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
+                                        Fertilizar:
+                                    </Accordion.Title>
+                                    <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
+                                        <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
+                                            {
+                                                tareasFertilizante.map((p, i) => {
+                                                    console.log('soy p', p);
+                                                    return (
+                                                        <>
+                                                            <li key={i} className="text-xl flex gap-4 items-center">
+                                                                <button 
+                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fertilizar', p.estado[1], tareasFertilizante, setTareasFertilizante)}> 
+                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                                </button>
+                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre} ml</p>
+                                                            </li> 
+                                                        </>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                    </Accordion.Content>
+                                </Accordion.Panel>
+                            </Accordion>
+                        </section> : null
+                    }
+
+                    {
+                        tareasPesticida.length > 0 ?
+                        <section className="pb-8 pt-4">
+                            <Accordion collapseAll className="border-none w-full">
+                                <Accordion.Panel className="border-none ">
+                                    <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
+                                        Fumigar:
+                                    </Accordion.Title>
+                                    <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
+                                        <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
+                                            {
+                                                tareasPesticida.map((p, i) => {
+                                                    console.log('soy p', p);
+                                                    return (
+                                                        <>
+                                                            <li key={i} className="text-xl flex gap-4 items-center">
+                                                                <button 
+                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fumigar', p.estado[1], tareasPesticida, setTareasPesticida)}> 
+                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                                </button>
+                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Aplicar {p.cantidad}{p.medida} de {p.pesticida} para "{p.nombre}"</p>
+                                                            </li> 
+                                                        </>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                    </Accordion.Content>
+                                </Accordion.Panel>
+                            </Accordion>
+                        </section> : null
                         
-                    </section> : null
-                }
-
-                {
-                    tareasPoda.length > 0 ?
-                    <section className="pb-8 pt-4">
-                        <Accordion collapseAll className="border-none w-full">
-                            <Accordion.Panel className="border-none ">
-                                <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
-                                    Podar:
-                                </Accordion.Title>
-                                <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
-                                    <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
-                                        {
-                                            tareasPoda.map((p, i) => {
-                                                console.log('soy p', p);
-                                                return (
-                                                    <>
-                                                        <li key={i} className="text-xl flex gap-4 items-center">
-                                                            <button 
-                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'podar', p.estado[1], tareasPoda, setTareasPoda)}> 
-                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                            </button>
-                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre} ml</p>
-                                                        </li> 
-                                                    </>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </Accordion.Content>
-                            </Accordion.Panel>
-                        </Accordion>
-                        
-                    </section> : null
-                }
-
-                {
-                    tareasFertilizante.length > 0 ?
-                    <section className="pb-8 pt-4">
-                        <Accordion collapseAll className="border-none w-full">
-                            <Accordion.Panel className="border-none ">
-                                <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
-                                    Fertilizar:
-                                </Accordion.Title>
-                                <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
-                                    <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
-                                        {
-                                            tareasFertilizante.map((p, i) => {
-                                                console.log('soy p', p);
-                                                return (
-                                                    <>
-                                                        <li key={i} className="text-xl flex gap-4 items-center">
-                                                            <button 
-                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fertilizar', p.estado[1], tareasFertilizante, setTareasFertilizante)}> 
-                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                            </button>
-                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre} ml</p>
-                                                        </li> 
-                                                    </>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </Accordion.Content>
-                            </Accordion.Panel>
-                        </Accordion>
-                    </section> : null
-                }
-
-                {
-                    tareasPesticida.length > 0 ?
-                    <section className="pb-8 pt-4">
-                        <Accordion collapseAll className="border-none w-full">
-                            <Accordion.Panel className="border-none ">
-                                <Accordion.Title className="dark:text-white dark:bg-Verde-oscuro-800 dark:hover:bg-Verde-oscuro-800 hover:bg-Verde-claro-800 bg-Verde-claro-800 border-none text-Verde-oscuro-800 text-2xl font-titulo focus:ring-0 focus:ring-transparent first:rounded-none md:first:rounded-t">
-                                    Fumigar:
-                                </Accordion.Title>
-                                <Accordion.Content className=" dark:bg-Verde-claro-800 bg-Verde-claro-400 border-none last:rounded-none">
-                                    <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
-                                        {
-                                            tareasPesticida.map((p, i) => {
-                                                console.log('soy p', p);
-                                                return (
-                                                    <>
-                                                        <li key={i} className="text-xl flex gap-4 items-center">
-                                                            <button 
-                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fumigar', p.estado[1], tareasPesticida, setTareasPesticida)}> 
-                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                            </button>
-                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Aplicar {p.cantidad}{p.medida} de {p.pesticida} para "{p.nombre}"</p>
-                                                        </li> 
-                                                    </>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </Accordion.Content>
-                            </Accordion.Panel>
-                        </Accordion>
-                    </section> : null
-                    
-                }
-            </section>
+                    }
+                </section>
+                : !cultivosUser || cultivosUser.length === 0 ?
+                <div className="my-10 text-Verde-oscuro-800 dark:text-white text-lg"> No tienes Cultivos Registrados ¡Agrega uno!</div>
+                :
+                <div className="my-10 text-Verde-oscuro-800 dark:text-white text-lg"> No tienes Tareas El Día de Hoy ¡Descansa!</div>
+            }
             
 
         </div>

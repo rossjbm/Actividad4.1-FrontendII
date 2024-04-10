@@ -42,9 +42,19 @@ class usuariosControllers {
                 return res.status(404).json({ "error": "No existe el usuario" }) //estado
             }
 
+            // bcrypt  DESCOMENTAR si se usa el nuevo registrado
+            // const verificarPassword = await bcryptjs.compare(password, usuariodb.contrasena)
+            // if (!verificarPassword) {
+            //     console.log('error en veri: ', verificarPassword);
+            //     return res.status(404).json({ "error": "La contrasenia esta errada" }) //estado
+            // }
+
+            // DESCOMENTAR si se usa un usuario de los viejos
             if (usuariodb.contrasena != password) {
                 return res.status(404).json({ "error": "La contrasenia esta errada" }) //estado
             }
+
+
             let token = crearToken({
                 id: usuariodb._id,
                 usuario: usuariodb.usuarioUnico

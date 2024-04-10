@@ -14,7 +14,7 @@ export function ClimaDeHoy( {climaHoy, fechaHoy}) {
                 <div className="w-2/5 flex justify-center">
                     <ImagenClima hora={hora} codigo={codigo} />
                 </div>
-                <ul className="w-3/5">
+                <ul className="w-3/5 text-lg">
                     <li>Temperatura: {climaHoy.temperatura}{climaHoy.temperaturaMedida}</li>
                     <li>Humedad: {climaHoy.humedad}{climaHoy.humedadMedida}</li>
                     <li>Velocidad del Viento: {climaHoy.vviento}{climaHoy.vvientoMedida}</li>
