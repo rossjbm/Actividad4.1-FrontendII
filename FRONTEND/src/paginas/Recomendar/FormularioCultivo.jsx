@@ -65,7 +65,7 @@ const FormularioCultivo = () => {
         e.preventDefault();
 
         try {
-            if (!cultivo || !ubicacion || humedad === null || temperatura === null) {
+            if (!cultivo || humedad === null || temperatura === null) {
                 throw new Error('Todos los campos son obligatorios');
             }
 
