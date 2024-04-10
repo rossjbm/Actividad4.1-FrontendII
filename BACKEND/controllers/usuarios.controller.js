@@ -8,12 +8,12 @@ class usuariosControllers {
             const id = req.params.id
             const data = await usuariosModels.findById(id);
             if (!data) {
-                return res.status('404').json({ error: "No existe el usuario" })
+                return res.status(404).json({ error: "No existe el usuario" })
             }
-            return res.status('200').json({ok: true, mensaje: "Se ha conseguido el usuarios" })
+            return res.status(200).json({ok: true, mensaje: "Se ha conseguido el usuarios" })
         } catch (error) {
             console.log('Hubo algún error', error); // vemos error por consola
-            res.status('404').json({ "error": error }) //estado
+            res.status(404).json({ "error": error }) //estado
         }
     }
 
@@ -23,30 +23,30 @@ class usuariosControllers {
             const usuariodb = await usuariosModels.findOne({usuarioUnico: usuario});
 
             if (!usuariodb) {
-                return res.status('404').json({ "error": "No existe el usuario" }) //estado
+                return res.status(404).json({ "error": "No existe el usuario" }) //estado
             }
 
             if (usuariodb.contrasena != password) {
-                return res.status('404').json({ "error": "La contrasenia esta errada" }) //estado
+                return res.status(404).json({ "error": "La contrasenia esta errada" }) //estado
             }
             let token = crearToken({
                 id: usuariodb._id,
                 usuario: usuariodb.usuarioUnico
             });
-            return res.status('200').json({token: token})
+            return res.status(200).json({token: token})
         } catch (error) {
             console.log('Hubo algún error', error); // vemos error por consola
-            res.status('404').json({ "error": error }) //estado
+            res.status(404).json({ "error": error }) //estado
         }
     }
 
     async verificacion(req, res, next) {
         try {
             const acceso = await autenticacionPorHeader(req, res, next);
-            res.status('200').json({"usuarioId": acceso.id})
+            res.status(200).json({"usuarioId": acceso.id})
         } catch (error) {
             console.log('Hubo algún error', error); // vemos error por consola
-            res.status('404').json({ "error": error }) //estado
+            res.status(404).json({ "error": error }) //estado
         }
     }
     
