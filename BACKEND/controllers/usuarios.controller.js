@@ -17,6 +17,20 @@ class usuariosControllers {
         }
     }
 
+    async listarPorId(req, res, next) {
+        try {
+            const id = req.params.id
+            const data = await usuariosModels.findById(id);
+            if (!data) {
+                return res.status(404).json({ error: "No existe el usuario" })
+            }
+            return res.status(200).json({ respuesta: data, mensaje: "Se ha conseguido el usuarios" })
+        } catch (error) {
+            console.log('Hubo algún error', error); // vemos error por consola
+            res.status(404).json({ "error": error }) //estado
+        }
+    }
+
     async iniciarSesion(req, res, next) {
         try {
             const { usuario, password } = req.body;

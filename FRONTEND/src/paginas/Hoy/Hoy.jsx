@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react"
 import Loader from "../../Componentes/globales/Loader/Loader";
 import { Recomendar } from "../../Componentes/Hoy/Recomendar"
+import { ClimaDeHoy } from "../../Componentes/Hoy/ClimaDeHoy";
 
 //llamados a back
 import { listarCultivos } from "../../peticiones/cultivos";
 import { listarCultivosDataName } from "../../peticiones/cultivos";
 import { actualizarEstado } from "../../peticiones/cultivos";
+import { listarUsuarioId } from "../../peticiones/usuarios";
 
 //iconos
 import { FaRegCheckSquare } from "react-icons/fa";
@@ -19,7 +21,9 @@ export function Hoy(){
     const [loaded, setLoaded] = useState(false);
     const [cultivosUser, setCultivosUser] = useState([]);
     const [fechaHoy, setFechaHoy] = useState(new Date());
-    const [temperaturaHoy, setTemperaturaHoy] = useState(15);
+
+    const [climaHoy, setClimaHoy] = useState();
+    const [temperaturaHoy, setTemperaturaHoy] = useState();
 
     const [tareasRiego, setTareasRiego] = useState([]);
     const [tareasPoda, setTareasPoda] = useState([]);
@@ -31,9 +35,6 @@ export function Hoy(){
 
     const cantidadRiego = useRef()
     const diasTotalesRef = useRef()
-    const podaRef = useRef()
-    const fertilizanteRef = useRef()
-
     
     var podaLista = []
     var riegoLista = []
@@ -45,6 +46,45 @@ export function Hoy(){
         const timer = setTimeout(() => {
             setLoaded(true);
         }, 2000); // Tiempo en milisegundos para simular la carga
+
+        async function datosClima() {
+            try {
+                const dataUsuario = await listarUsuarioId(usuarioId)
+                console.log('DATA',dataUsuario)
+
+                try {
+                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${dataUsuario.latitud}&longitude=${dataUsuario.longitud}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m&forecast_days=1`);
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud a la API');
+                    }
+                    const data = await response.json();
+                    console.log('clima', data)
+                    setTemperaturaHoy(data.current.temperature_2m)
+
+                    console.log('datos', data.current_units.temperature_2m)
+
+                    setClimaHoy({
+                        temperatura: data.current.temperature_2m,
+                        temperaturaMedida: data.current_units.temperature_2m,
+                        humedad: data.current.relative_humidity_2m,
+                        humedadMedida: data.current_units.relative_humidity_2m,
+                        vviento: data.current.wind_speed_10m,
+                        vvientoMedida: data.current_units.wind_speed_10m,
+                        dviento: data.current.wind_direction_10m,
+                        dvientoMedida: data.current_units.wind_direction_10m,
+                        codigo: data.current.weather_code
+                    })
+                } catch (error) {
+                    console.log('error en la API', error)
+                }
+
+            } catch (error) {
+                console.log(error)
+                throw error
+            }
+
+        }
+        datosClima()
 
         async function guardarCultivos() {
             const cultivos = await listarCultivos(usuarioId);
@@ -66,7 +106,7 @@ export function Hoy(){
                     try {
                         const data = await listarCultivosDataName(cultivo.cultivo)
                         cultivoData = data[0]
-                        console.log('soy data',cultivoData.nombre)
+                        // console.log('soy data',cultivoData.nombre)
                     } catch (error) {
                         return console.log(error)
                     }
@@ -88,56 +128,56 @@ export function Hoy(){
 
                                 await cantidadAgua(temperaturaHoy, minimo, medio, maximo, cultivoData)
                                 riegoLista=[...riegoLista, {regar: true, estado:[i, cultivo.regar.hecho[i]], nombre: cultivo.nombre, idCultivo:cultivo._id, cantidad: cantidadRiego.current*cultivo.numeroCultivos}];
-                                console.log(riegoLista[0].estado[1])
+                                // console.log(riegoLista[0].estado[1])
                             }
                         }
                     }
                     setTareasRiego(riegoLista)
-                    console.log('soy riegoLista de riego', riegoLista)
+                    // console.log('soy riegoLista de riego', riegoLista)
 
                     //podar
-                    console.log('podar',cultivo.podar)
+                    // console.log('podar',cultivo.podar)
                     if (cultivo.podar) {
                         for (let i=0;i<cultivo.podar.dias.length ;i++){
                             // console.log(cultivo.podar.dias[i])
                             if(diasTotalesRef.current === cultivo.podar.dias[i]) {
-                                console.log('si se riega', cultivo.nombre, cultivo.podar.dias[i])
+                                // console.log('si se riega', cultivo.nombre, cultivo.podar.dias[i])
                                 podaLista=[...podaLista, {podar: true, estado:[i, cultivo.podar.hecho[i]], nombre: cultivo.nombre}];
                             }
                         }
                     }
                     setTareasPoda(podaLista)
-                    console.log('soy podaLista de poda', podaLista)
+                    // console.log('soy podaLista de poda', podaLista)
 
                     //fertilizar
-                    console.log('fertilizar',cultivo.fertilizar)
+                    // console.log('fertilizar',cultivo.fertilizar)
                     if (cultivo.fertilizar) {
                         for (let i=0;i<cultivo.fertilizar.dias.length ;i++){
                             // console.log(cultivo.fertilizar.dias[i])
                             if(diasTotalesRef.current === cultivo.fertilizar.dias[i]) {
-                                console.log('si se fertiliza', cultivo.nombre, cultivo.fertilizar.dias[i])
+                                // console.log('si se fertiliza', cultivo.nombre, cultivo.fertilizar.dias[i])
                                 fertilizanteLista=[...fertilizanteLista, {fertilizar: true, estado:[i, cultivo.fertilizar.hecho[i]], nombre: cultivo.nombre}];
                             }
                         }
                     }
                     setTareasFertilizante(fertilizanteLista)
-                    console.log('soy fertilizanteLista de poda', fertilizanteLista)
+                    // console.log('soy fertilizanteLista de poda', fertilizanteLista)
 
                     //pesticida
                     if (cultivo.fumigar) {
-                        console.log('pesticida',cultivo.fumigar)
+                        // console.log('pesticida',cultivo.fumigar)
                         fumigarLista=[...fumigarLista, {fumigar: true, estado:[1, cultivo.fumigar.hechos[1]], nombre: cultivo.nombre, cantidad: cultivo.fumigar.cantidad*cultivo.numeroCultivos, medida: cultivo.fumigar.medida, pesticida: cultivo.fumigar.pesticida}];
 
                         for (let i=0;i<cultivo.fumigar.dias.length ;i++){
                             // console.log(cultivo.fertilizar.dias[i])
                             if(diasTotalesRef.current === cultivo.fumigar.dias[i]) {
-                                console.log('si se fumiga', cultivo.nombre, cultivo.fumigar.dias[i])
+                                // console.log('si se fumiga', cultivo.nombre, cultivo.fumigar.dias[i])
                                 fumigarLista=[...fumigarLista, {fumigar: true, estado:[i, cultivo.fumigar.hechos[i]], nombre: cultivo.nombre, cantidad: cultivo.fumigar.cantidad*cultivo.numeroCultivos, medida: cultivo.fumigar.medida, pesticida: cultivo.fumigar.pesticida}];
                             }
                         }
                     }
                     setTareasPesticida(fumigarLista)
-                    console.log('soy fumigarLista de fumigar', fumigarLista)
+                    // console.log('soy fumigarLista de fumigar', fumigarLista)
                 }
             })();
         } else {
@@ -153,7 +193,7 @@ export function Hoy(){
             cont++
             // console.log('soy', cultivo.nombre,'tengo días', cont, 'mi fecha es', fecha1)
         }
-        console.log('tengo días', cont)
+        // console.log('tengo días', cont)
         diasTotalesRef.current =  cont
     }
 
@@ -207,6 +247,8 @@ export function Hoy(){
         <div className="flex flex-col py-12 gap-8 items-center">
             <h1 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center">Hoy es {fechaHoy.toLocaleDateString()} </h1>
 
+            <ClimaDeHoy climaHoy={climaHoy} fechaHoy={fechaHoy} />
+
             <Recomendar/>
 
             <h2 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center mt-10">Todas tus Tareas de Hoy</h2>
@@ -224,8 +266,7 @@ export function Hoy(){
                                     <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
                                         {
                                             tareasRiego.map((p, i) => {
-                                                console.log('soy p', p);
-                                                console.log('soy estado ferti', p.estado[1]);
+                                                // console.log('soy p', p);
                                                 return (
                                                     <>
                                                         <li key={i} className="text-lg flex gap-4 items-center">
