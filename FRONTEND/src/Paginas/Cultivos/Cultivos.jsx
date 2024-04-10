@@ -26,6 +26,7 @@ function Cultivos() {
   const [usuarioId, setUsuarioId] = useState(localStorage.getItem("usuarioId")); // Ejemplo
   const [state, setState] = useState({
     nombre: "",
+    cultivo: "",
     usuarioId: usuarioId, //Ejemplo
     fertilizante: "",
     plantacion: "",
@@ -44,7 +45,7 @@ function Cultivos() {
 
   useEffect(() => {
     async function actualizarCultivos() {
-      const data = await listarCultivos(usuarioId);
+      const data = await listarCultivos(usuarioId); //cultivos guarda los cultivos de usuario
       const datos = await listarCultivosData();
       setCultivos(data);
       setCultivosData(datos);
@@ -56,17 +57,18 @@ function Cultivos() {
   useEffect(() => {
     const arrayCultivos = [];
     for (let i = 0; i < cultivos.length; i++) {
-      console.log(cultivos[i].nombre);
+      console.log(cultivos[i].cultivo);
       const actualizado = cultivos[i];
       for (let a = 0; a < cultivosData.length; a++) {
-        if (cultivos[i].nombre === cultivosData[a].nombre) {
+        if (cultivos[i].cultivo === cultivosData[a].nombre) {
           actualizado.data = cultivosData[a];
           arrayCultivos.push(actualizado);
+          console.log('soy array',arrayCultivos)
         }
       }
     }
     console.log(arrayCultivos);
-    setData(arrayCultivos);
+    setData(arrayCultivos);  //informacion de los cultivos
   }, [cultivos]);
 
   async function actualizandoAdd() {
@@ -77,10 +79,11 @@ function Cultivos() {
   function cargarCultivo(id) {
     for (let i = 0; i < cultivos.length; i++) {
       if (cultivos[i]._id === id) {
-        setSeleccionado(cultivos[i]);
+        setSeleccionado(cultivos[i]);  //seleccionado cultivo de usuario
         for (let a = 0; a < cultivosData.length; a++) {
-          if (cultivosData[a].nombre === cultivos[i].nombre) {
-            setSeleccionadoData(cultivosData[a]);
+          if (cultivosData[a].nombre === cultivos[i].cultivo) {
+            setSeleccionadoData(cultivosData[a]);  //data del cultivo seleccionado
+            console.log('soy cultivo de selecicoando', cultivosData[a])
           }
         }
       }
@@ -206,7 +209,7 @@ function Cultivos() {
                       }}
                       className="text-center font-texto text-base font-semibold"
                     >
-                      {cultivo.nombre}
+                      {cultivo.cultivo}
                     </a>
                   </li>
                 ))}
@@ -273,16 +276,16 @@ function Cultivos() {
               >
                 <div className="flex flex-col gap-2">
                   <label
-                    htmlFor="nombre"
+                    htmlFor="cultivo"
                     className="dark:text-white font-titulo text-lg text-Verde-oscuro-800"
                   >
                     Selecciona el Cultivo:
                   </label>
                   <select
                     onChange={cambiando}
-                    value={state.nombre}
-                    name="nombre"
-                    id="nombre"
+                    value={state.cultivo}
+                    name="cultivo"
+                    id="cultivo"
                     className="dark:bg-Verde-claro-600 dark:text-white rounded-3xl border-none text-Verde-oscuro-800 px-4 font-texto focus:outline-none"
                     required
                   >
@@ -302,6 +305,24 @@ function Cultivos() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="nombre"
+                    className="dark:text-white font-titulo text-lg text-Verde-oscuro-800"
+                  >
+                    Da un Nombre a tu Cultivo:
+                  </label>
+                  <input
+                    type="text"
+                    onChange={cambiando}
+                    value={state.nombre}
+                    name="nombre"
+                    id="nombre"
+                    className="dark:bg-Verde-claro-600 dark:text-white rounded-3xl border-none text-Verde-oscuro-800 px-4 font-texto focus:outline-none"
+                    required
+                  />
                 </div>
 
                 <div className="flex flex-col gap-2">

@@ -2,14 +2,19 @@ import { Accordion } from "flowbite-react";
 
 function TarjetaCultivos({ cultivo, cultivoData }) {
 
+  const plagas = cultivoData.plagas
+
   return (
     <>
       <div className="border-[3px] dark:bg-Marron-900 dark:border-Marron-900 h-full border-Marron-400 py-8 px-2">
         <div className="flex flex-col gap-4">
-          <h3 className="dark:text-white text-2xl font-titulo font-semibold text-Verde-oscuro-800 text-center">
+          <h3 className="dark:text-white text-2xl font-titulo text-Verde-oscuro-800 text-center">
             {cultivo.nombre}
           </h3>
-          <h4 className="dark:text-white text-xl font-titulo text-Verde-oscuro-800 text-center">
+          <h4 className="dark:text-white text-lg font-titulo text-Verde-oscuro-800 text-center">
+            Cultivo de: {cultivo.cultivo}
+          </h4>
+          <h4 className="dark:text-white text-lg font-titulo text-Verde-oscuro-800 text-center">
             {cultivoData.nombreCientifico}
           </h4>
 
@@ -17,12 +22,12 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
             <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
               Día de Plantación: {cultivo.plantacion}
             </li>
-            <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
+            {/* <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
               Día de Floración: No se que hacer
             </li>
             <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
               Día de Cosecha: No se que hacer
-            </li>
+            </li> */}
             <li className="dark:text-white text-sm font-texto text-Verde-oscuro-800">
               Cantidad de Agua por Planta: De {cultivoData.riego.cantidadBaja}ml a {cultivoData.riego.cantidadAlta}ml
             </li>
@@ -61,8 +66,18 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
                 <div>
                   <h5 className="dark:text-white text-sm font-titulo mt-8 mb-4 text-Verde-oscuro-800 ">Plagas Comunes:</h5>
                   <ul className="px-8">
-                    <li className="dark:text-white list-disc text-sm text-Verde-oscuro-800">{cultivoData.plagas}</li>
+                    {/* <li className="dark:text-white list-disc text-sm text-Verde-oscuro-800">{cultivoData.plagas.tipo}</li> */}
                   </ul>
+                  {
+                    plagas.map((plaga, i) => {
+                      
+                      return(<>
+                        <ul className="px-8" key={i} >
+                          <li className="dark:text-white list-disc text-sm text-Verde-oscuro-800">{plaga.tipo}</li>
+                        </ul>
+                      </>)
+                    })
+                  }
                 </div>
               </Accordion.Content>
             </Accordion.Panel>
