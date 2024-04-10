@@ -8,5 +8,6 @@ router.get('/:id' , cultivosUserController.listarDeUsuarios);
 router.post('/' , cultivosUserController.agregar);
 router.delete('/:id' , cultivosUserController.eliminar);
 router.put('/pesticida' , cultivosUserController.agregarPesticida);
+router.put('/tareaEstado' , cultivosUserController.actualizarTarea);
 
 module.exports = router;

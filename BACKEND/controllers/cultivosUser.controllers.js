@@ -229,7 +229,7 @@ class cultivos_usuariosControllers {
                 hechos =  [...hechos, 0];
             }
 
-            const resultado = await cultivosUser.findByIdAndUpdate(id, {$set:{fumigar: {dias: pesticidaTarea, hechos: hechos, cantidad: datosPlaga.cantidad, medida: datosPlaga.medida}}})
+            const resultado = await cultivosUser.findByIdAndUpdate(id, {$set:{fumigar: {dias: pesticidaTarea, hechos: hechos, cantidad: datosPlaga.cantidad, medida: datosPlaga.medida, pesticida: datosPlaga.pesticida}}})
 
             console.log(resultado)
             return res.status('200').json({ "mensaje": `Se ha registrado correctamente la plaga. A partir de mañana inicia su tratamiento con ${datosPlaga.pesticida}` })
@@ -238,6 +238,22 @@ class cultivos_usuariosControllers {
             res.status('404').json({ "error": error }) //estado
         }
     }
+
+    //actualizar estado de tarea
+    async actualizarTarea(req, res, next) {
+        const { posicion, id, tarea, cambio} = req.body; //posicion = del array; id = id del cultivo del usuario; tipo de tarea para saber titulo
+        console.log(posicion, id, tarea, cambio)
+
+        try {
+            const resultado = await cultivosUser.updateOne({_id: id}, { $set: { [`${tarea}.hecho.${posicion}`]: cambio } })
+
+            return res.status('200').json({ "resultado": resultado ,"mensaje": `Se ha actualizado el estado` })
+        } catch (error) {
+            return res.status('404').json({ "error": error ,"mensaje": `No se ha actualizado el estado` })
+        }
+
+    }
+
 }
 
 module.exports = new cultivos_usuariosControllers();
