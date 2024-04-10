@@ -10,7 +10,7 @@ class usuariosControllers {
             if (!data) {
                 return res.status(404).json({ error: "No existe el usuario" })
             }
-            return res.status(200).json({ok: true, mensaje: "Se ha conseguido el usuarios" })
+            return res.status(200).json({ok: true, respuesta: data, mensaje: "Se ha conseguido el usuarios" })
         } catch (error) {
             console.log('Hubo algún error', error); // vemos error por consola
             res.status(404).json({ "error": error }) //estado

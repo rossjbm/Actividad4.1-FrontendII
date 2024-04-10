@@ -69,7 +69,7 @@ function Login() {
 
     return (
         <>
-            <main className="w-full h-[100vh] bg-fondoLanding bg-cover bg-center bg-no-repeat flex justify-center items-center">
+            <main className="w-full h-[900px] bg-fondoLanding bg-cover bg-center bg-no-repeat flex justify-center items-center lg:items-start lg:pt-20">
                 <div className="w-[90vw] md:w-[60vw] xl:w-[40vw] p-8 bg-Marron-400 dark:bg-Verde-oscuro-800 rounded-2xl border-[3px] flex flex-col gap-6 border-Verde-oscuro-800 dark:border-white">
                     <h1 className="font-titulo text-Verde-oscuro-800 dark:text-white text-3xl text-center">Iniciar Sesión</h1>
                     <form onSubmit={subida} action="" className="flex flex-col gap-6">

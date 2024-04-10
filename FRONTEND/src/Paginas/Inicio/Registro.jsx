@@ -81,9 +81,9 @@ const RegistroFormulario = () => {
 
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-fondoLanding bg-cover bg-top">
-        <div className="w-[90vw] md:w-[60vw] xl:w-[40vw] p-8 mt-8 mb-8 bg-Marron-400 dark:bg-Verde-oscuro-800 rounded-2xl border-[3px] flex flex-col gap-6 border-Verde-oscuro-800 dark:border-white">
-        <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white font-titulo">Registrarse</h2>
+        <div className="flex justify-center items-center min-h-screen bg-fondoLanding bg-cover bg-top py-10">
+        <div className="w-[90vw] md:w-[60vw] xl:w-[40vw] p-8 mt-10 mb-10 bg-Marron-400 dark:bg-Verde-oscuro-800 rounded-2xl border-[3px] flex flex-col gap-6 border-Verde-oscuro-800 dark:border-white">
+        <h2 className="text-2xl mb-6 text-center text-black dark:text-white font-titulo">Registrarse</h2>
 
         <form onSubmit={handleRegistro} className="space-y-4">
                     <label htmlFor="nombreCompleto" className="block text-black dark:text-white font-titulo">Nombre Completo</label>
@@ -104,8 +104,8 @@ const RegistroFormulario = () => {
                     <label htmlFor="Ubicacion" className="block text-black dark:text-white font-titulo">Selecciona tu ubicación</label>
                     <div ref={mapRef} style={{ width: '100%', height: '300px' }} />
 
-                    <div className="flex justify-center">
-                        <button type="submit" className="btn btn-primary bg-Verde-claro-800 text-white font-bold py-2 px-4 rounded font-titulo rounded-full">Registrarse</button>
+                    <div className="flex justify-center py-5">
+                        <button type="submit" className="btn btn-primary bg-Verde-claro-800 text-white py-2 px-4 font-titulo rounded-full">Registrarse</button>
                     </div>
 
                     <div className="flex justify-center items-center space-x-2">
