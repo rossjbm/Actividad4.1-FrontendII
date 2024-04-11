@@ -43,16 +43,16 @@ class usuariosControllers {
             }
 
             // bcrypt  DESCOMENTAR si se usa el nuevo registrado
-            // const verificarPassword = await bcryptjs.compare(password, usuariodb.contrasena)
-            // if (!verificarPassword) {
-            //     console.log('error en veri: ', verificarPassword);
-            //     return res.status(404).json({ "error": "La contrasenia esta errada" }) //estado
-            // }
-
-            // DESCOMENTAR si se usa un usuario de los viejos
-            if (usuariodb.contrasena != password) {
+            const verificarPassword = await bcryptjs.compare(password, usuariodb.contrasena)
+            if (!verificarPassword) {
+                console.log('error en veri: ', verificarPassword);
                 return res.status(404).json({ "error": "La contrasenia esta errada" }) //estado
             }
+
+            // // DESCOMENTAR si se usa un usuario de los viejos
+            // if (usuariodb.contrasena != password) {
+            //     return res.status(404).json({ "error": "La contrasenia esta errada" }) //estado
+            // }
 
 
             let token = crearToken({

@@ -36,13 +36,6 @@ export function Encabezado({ isLogin, setIsLogin }) {
                         <NavLink to={'/perfil'} className={({ isActive }) => (isActive ? `bg-[#9C8C6D66] p-2 rounded-xl` : 'hover:bg-[#9C8C6D66] p-2 rounded-xl')}>Perfil</NavLink>
                     </li>
                     <li>
-                        {
-                            isLogin
-                            ? (<NavLink to={'/iniciosesion'} className='hover:bg-[#9C8C6D66] p-2 rounded-xl'>Iniciar Sesion</NavLink>)
-                            : (<button onClick={cerrarsesion} className='hover:bg-[#9C8C6D66] p-2 rounded-xl'>Cerrar Sesion</button>)
-                        }
-                    </li>
-                    <li>
                         <ModoOscuro />
                     </li>
                 </ul>

@@ -14,7 +14,6 @@ import Login from "./Paginas/Inicio/Login";
 import ErrorLogin from "./Paginas/Inicio/ErrorLogin";
 import RegistroFormulario from "./Paginas/Inicio/Registro";
 import CerrarSesion from "./Paginas/Perfil/BotonSesion";
-import Perfil from "./Paginas/Perfil/Perfil";
 
 export const Mostrar = React.createContext();
 export const Tema = React.createContext();

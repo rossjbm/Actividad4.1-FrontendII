@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Alerta from '../../Componentes/Recomendar/Alerta';
 import Loader from "../../Componentes/globales/Loader/Loader";
+import { listarUsuarioId } from '../../peticiones/usuarios';
 
 const FormularioCultivo = () => {
     const [cultivo, setCultivo] = useState('');
@@ -12,13 +13,13 @@ const FormularioCultivo = () => {
     const [humedad, setHumedad] = useState(null);
     const [temperatura, setTemperatura] = useState(null);
     const [loaded, setLoaded] = useState(false);
-    const opcionesCultivo = ['Zanahoria', 'Papa', 'Tomate', 'Fresas', 'Pimentón', 'Lechuga'];
+    const opcionesCultivo = ['Zanahoria', 'Papa', 'Tomate', 'Pimentón', 'Lechuga'];
+    const [usuarioId, setUsuarioId] = useState(localStorage.getItem("usuarioId"));
 
     const rangosCultivo = {
         Zanahoria: { humedadMin: 70, humedadMax: 80, temperaturaMin: 16, temperaturaMax: 18 },
         Papa: { humedadMin: 90, humedadMax: 95, temperaturaMin: 20, temperaturaMax: 25 },
         Tomate: { humedadMin: 60, humedadMax: 85, temperaturaMin: 18, temperaturaMax: 27 },
-        Fresas: { humedadMin: 60, humedadMax: 75, temperaturaMin: 15, temperaturaMax: 20 },
         Pimentón: { humedadMin: 50, humedadMax: 70, temperaturaMin: 20, temperaturaMax: 25 },
         Lechuga: { humedadMin: 60, humedadMax: 80, temperaturaMin: 15, temperaturaMax: 20 },
     };
@@ -35,26 +36,33 @@ const FormularioCultivo = () => {
     useEffect(() => {
         const obtenerDatosAPI = async () => {
             try {
-                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=9.375&longitude=-70.75&hourly=temperature_2m,relative_humidity_2m,weather_code&forecast_days=1`);
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud a la API');
-                }
-                const data = await response.json();
-
-                if (data && data.hourly && data.hourly.temperature_2m && data.hourly.relative_humidity_2m) {
-                    const temp = data.hourly.temperature_2m[0];
-                    const hum = data.hourly.relative_humidity_2m[0];
-
-                    setTemperatura(temp);
-                    setHumedad(hum);
-                } else {
-                    throw new Error('Datos de la API no están en el formato esperado');
+                const dataUsuario = await listarUsuarioId(usuarioId)
+                console.log('DATA',dataUsuario)
+                try {
+                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${dataUsuario.latitud}&longitude=${dataUsuario.longitud}&hourly=temperature_2m,relative_humidity_2m,weather_code&forecast_days=1`);
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud a la API');
+                    }
+                    const data = await response.json();
+    
+                    if (data && data.hourly && data.hourly.temperature_2m && data.hourly.relative_humidity_2m) {
+                        const temp = data.hourly.temperature_2m[11];
+                        const hum = data.hourly.relative_humidity_2m[11];
+    
+                        setTemperatura(temp);
+                        setHumedad(hum);
+                    } else {
+                        throw new Error('Datos de la API no están en el formato esperado');
+                    }
+                } catch (error) {
+                    console.error('Error al obtener datos de la API:', error);
+                    setTipoAlerta('error');
+                    setMensajeAlerta('Error al obtener datos de la API. Por favor, inténtalo de nuevo.');
+                    setMostrarAlerta(true);
                 }
             } catch (error) {
-                console.error('Error al obtener datos de la API:', error);
-                setTipoAlerta('error');
-                setMensajeAlerta('Error al obtener datos de la API. Por favor, inténtalo de nuevo.');
-                setMostrarAlerta(true);
+                console.log(error)
+                throw error
             }
         };
 

@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useContext } from "react"
+import { Link } from "react-router-dom";
 import Loader from "../../Componentes/globales/Loader/Loader";
 import { Recomendar } from "../../Componentes/Hoy/Recomendar"
 import { ClimaDeHoy } from "../../Componentes/Hoy/ClimaDeHoy";
@@ -12,12 +13,16 @@ import { listarUsuarioId } from "../../peticiones/usuarios";
 //iconos
 import { FaRegCheckSquare } from "react-icons/fa";
 import { ImCheckboxUnchecked } from "react-icons/im";
+import LogoDark from "../../assets/Iconos/exito-darkmode.png"
+import LogoClaro from "../../assets/Iconos/exito.png"
 
 //estilos
 import { Accordion } from "flowbite-react";
+import { Tema } from "../../App";
 
 
 export function Hoy(){
+    const {darkMode} = useContext(Tema)
     const [loaded, setLoaded] = useState(false);
     const [cultivosUser, setCultivosUser] = useState([]);
     const [fechaHoy, setFechaHoy] = useState(new Date());
@@ -106,7 +111,6 @@ export function Hoy(){
                     try {
                         const data = await listarCultivosDataName(cultivo.cultivo)
                         cultivoData = data[0]
-                        // console.log('soy data',cultivoData.nombre)
                     } catch (error) {
                         return console.log(error)
                     }
@@ -116,68 +120,50 @@ export function Hoy(){
                     await calcularDias(fecha1, fecha2)
     
                     //regar
-                    // console.log('regar', cultivo.regar.dias)
                     if (cultivo.regar) {
                         for (let i=0;i<cultivo.regar.dias.length ;i++){
-                            // console.log(cultivo.regar.dias[i])
                             if(diasTotalesRef.current === cultivo.regar.dias[i]) {
-                                // console.log(cultivoData.riego)
                                 const minimo = cultivoData.temperatura.minima
                                 const medio = cultivoData.temperatura.media
                                 const maximo = cultivoData.temperatura.maxima
 
                                 await cantidadAgua(temperaturaHoy, minimo, medio, maximo, cultivoData)
                                 riegoLista=[...riegoLista, {regar: true, estado:[i, cultivo.regar.hecho[i]], nombre: cultivo.nombre, idCultivo:cultivo._id, cantidad: cantidadRiego.current*cultivo.numeroCultivos}];
-                                // console.log(riegoLista[0].estado[1])
                             }
                         }
                     }
                     setTareasRiego(riegoLista)
-                    // console.log('soy riegoLista de riego', riegoLista)
 
                     //podar
-                    // console.log('podar',cultivo.podar)
                     if (cultivo.podar) {
                         for (let i=0;i<cultivo.podar.dias.length ;i++){
-                            // console.log(cultivo.podar.dias[i])
                             if(diasTotalesRef.current === cultivo.podar.dias[i]) {
-                                // console.log('si se riega', cultivo.nombre, cultivo.podar.dias[i])
                                 podaLista=[...podaLista, {podar: true, estado:[i, cultivo.podar.hecho[i]], nombre: cultivo.nombre}];
                             }
                         }
                     }
                     setTareasPoda(podaLista)
-                    // console.log('soy podaLista de poda', podaLista)
 
                     //fertilizar
-                    // console.log('fertilizar',cultivo.fertilizar)
                     if (cultivo.fertilizar) {
                         for (let i=0;i<cultivo.fertilizar.dias.length ;i++){
-                            // console.log(cultivo.fertilizar.dias[i])
                             if(diasTotalesRef.current === cultivo.fertilizar.dias[i]) {
-                                // console.log('si se fertiliza', cultivo.nombre, cultivo.fertilizar.dias[i])
                                 fertilizanteLista=[...fertilizanteLista, {fertilizar: true, estado:[i, cultivo.fertilizar.hecho[i]], nombre: cultivo.nombre}];
                             }
                         }
                     }
                     setTareasFertilizante(fertilizanteLista)
-                    // console.log('soy fertilizanteLista de poda', fertilizanteLista)
 
                     //pesticida
                     if (cultivo.fumigar) {
-                        // console.log('pesticida',cultivo.fumigar)
                         fumigarLista=[...fumigarLista, {fumigar: true, estado:[1, cultivo.fumigar.hechos[1]], nombre: cultivo.nombre, cantidad: cultivo.fumigar.cantidad*cultivo.numeroCultivos, medida: cultivo.fumigar.medida, pesticida: cultivo.fumigar.pesticida}];
-
                         for (let i=0;i<cultivo.fumigar.dias.length ;i++){
-                            // console.log(cultivo.fertilizar.dias[i])
                             if(diasTotalesRef.current === cultivo.fumigar.dias[i]) {
-                                // console.log('si se fumiga', cultivo.nombre, cultivo.fumigar.dias[i])
                                 fumigarLista=[...fumigarLista, {fumigar: true, estado:[i, cultivo.fumigar.hechos[i]], nombre: cultivo.nombre, cantidad: cultivo.fumigar.cantidad*cultivo.numeroCultivos, medida: cultivo.fumigar.medida, pesticida: cultivo.fumigar.pesticida}];
                             }
                         }
                     }
                     setTareasPesticida(fumigarLista)
-                    // console.log('soy fumigarLista de fumigar', fumigarLista)
                 }
             })();
         } else {
@@ -221,20 +207,13 @@ export function Hoy(){
         const diferencia2 = Math.abs(temperaturaHoy - medio)
         const diferencia3 = Math.abs(temperaturaHoy - maximo)
 
-        // console.log('diferencia minima', diferencia1)
-        // console.log('diferencia media', diferencia2)
-        // console.log('diferencia maxima', diferencia3)
-
         const diferenciaMin = Math.min(diferencia1, diferencia2, diferencia3)
 
         if (diferenciaMin === diferencia1) {
-            // console.log('baja cantidad:', cultivoData.riego.cantidadBaja)
             cantidadRiego.current = cultivoData.riego.cantidadBaja
         } else if (diferenciaMin === diferencia2) {
-            // console.log('media cantidad:', cultivoData.riego.cantidadMedia)
             cantidadRiego.current = cultivoData.riego.cantidadMedia
         } else {
-            // console.log('alta cantidad:', cultivoData.riego.cantidadAlta)
             cantidadRiego.current = cultivoData.riego.cantidadAlta
         }
     }
@@ -392,9 +371,24 @@ export function Hoy(){
                     }
                 </section>
                 : !cultivosUser || cultivosUser.length === 0 ?
-                <div className="my-10 text-Verde-oscuro-800 dark:text-white text-lg"> No tienes Cultivos Registrados ¡Agrega uno!</div>
+                    <>
+                        <div className="my-10 text-Verde-oscuro-800 dark:text-white text-lg"> No tienes Cultivos Registrados <Link to={'/tuscultivos'} className="underline">¡Agrega uno!</Link></div>
+                        {
+                            darkMode
+                            ? (<img src={LogoDark} alt="Logo de Cultivos" className="h-36" />)
+                            : (<img src={LogoClaro} alt="Logo de Cultivos" className="h-36" />)
+                        }
+                    </>
+
                 :
-                <div className="my-10 text-Verde-oscuro-800 dark:text-white text-lg"> No tienes Tareas El Día de Hoy ¡Descansa!</div>
+                <>
+                    <div className="my-10 text-Verde-oscuro-800 dark:text-white text-lg"> No tienes Tareas El Día de Hoy ¡Descansa!</div>
+                    {
+                        darkMode
+                        ? (<img src={LogoDark} alt="Logo de Cultivos" className="h-36" />)
+                        : (<img src={LogoClaro} alt="Logo de Cultivos" className="h-36" />)
+                    }
+                </>
             }
             
 
@@ -403,165 +397,3 @@ export function Hoy(){
       </>
       );
 }
-
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //       setLoaded(true);
-    //     }, 2000); // Tiempo en milisegundos para simular la carga
-      
-    //     return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
-    // }, []);
-      
-    // useEffect(() => {
-    //     async function guardarCultivos() {
-    //         const cultivos = await listarCultivos(usuarioId);
-    //         //por ahora la prueba con el priemro
-    //         setCultivosUser(cultivos);
-    //     }
-    //     guardarCultivos();
-    //     // guardarFechas();
-    // }, []);
-
-    // useEffect(() => {
-    //     if (cultivosUser && cultivosUser.length != 0) {
-    //         Promise.all(
-    //             cultivosUser.map(async cultivo => {
-
-    //                 var cultivoData = {};
-
-    //                 try {
-    //                     const data = await listarCultivosDataName(cultivo.nombre)
-    //                     cultivoData = data[0]
-    //                     // console.log('soy data',cultivoData.nombre)
-    //                 } catch (error) {
-    //                     return console.log(error)
-    //                 }
-
-    //                 const fecha1 = new Date(cultivo.plantacion)
-    //                 const fecha2 = new Date(fechaHoy)
-    //                 await calcularDias(fecha1, fecha2)
-
-    //                 //riego
-    //                 if (diasTotalesRef % cultivoData.riego.frecuencia === 0 || cultivoData.riego.frecuencia === 0) {
-    //                     // console.log('estoy en el if')
-    //                     const minimo = cultivoData.temperatura.minima
-    //                     const medio = cultivoData.temperatura.media
-    //                     const maximo = cultivoData.temperatura.maxima
-
-    //                     await cantidadAgua(temperaturaHoy, minimo, medio, maximo, cultivoData)
-    //                 } else {
-    //                     riegoRef.current = false
-    //                 }
-
-    //                 // console.log('current', riegoRef.current)
-    //                 // console.log('diasTotales', diasTotalesRef.current)
-
-    //                 const resultado = {
-    //                     riego: {
-    //                         tarea: riegoRef.current,
-    //                         estado: 'uncheck'
-    //                     },
-    //                     diasTotales: diasTotalesRef.current,
-    //                     nombre: cultivo.nombre
-    //                 }
-
-    //                 // console.log('soy resultado', resultado)
-    //                 return resultado
-    //             })
-    //         ).then(resultados => {
-    //             setTareasTodas(...tareasTodas, resultados);
-    //         });
-    //     } else {
-    //         console.log('no hay cultivos')
-    //     }
-    // }, [cultivosUser]);
-
-    // //funciones
-    // async function calcularDias(fecha1, fecha2) {
-    //     var cont = 0;
-    //     for (let i = 0; fecha1 <= fecha2; i++) {
-    //         fecha1.setDate(fecha1.getDate() + 1);
-    //         cont++
-    //         // console.log('soy', cultivo.nombre,'tengo días', cont, 'mi fecha es', fecha1)
-    //     }
-    //     // console.log('tengo días', cont)
-    //     if (cont >= 0) {
-    //         diasTotalesRef.current =  cont
-    //     } else {
-    //         diasTotalesRef.current =  false
-    //     }
-
-    // }
-
-    // async function cantidadAgua(temperaturaHoy, minimo, medio, maximo, cultivoData) {
-    //     const diferencia1 = Math.abs(temperaturaHoy - minimo)
-    //     const diferencia2 = Math.abs(temperaturaHoy - medio)
-    //     const diferencia3 = Math.abs(temperaturaHoy - maximo)
-
-    //     // console.log('diferencia minima', diferencia1)
-    //     // console.log('diferencia media', diferencia2)
-    //     // console.log('diferencia maxima', diferencia3)
-
-    //     const diferenciaMin = Math.min(diferencia1, diferencia2, diferencia3)
-
-    //     if (diferenciaMin === diferencia1) {
-    //         // console.log('baja cantidad:', cultivoData.riego.cantidadBaja)
-    //         riegoRef.current = cultivoData.riego.cantidadBaja
-    //     } else if (diferenciaMin === diferencia2) {
-    //         // console.log('media cantidad:', cultivoData.riego.cantidadMedia)
-    //         riegoRef.current = cultivoData.riego.cantidadMedia
-
-    //     } else {
-    //         // console.log('alta cantidad:', cultivoData.riego.cantidadAlta)
-    //         riegoRef.current = cultivoData.riego.cantidadAlta
-    //     }
-    // }
-
-    // function checkTarea(e, i){
-    //     e.preventDefault();
-    //     setTareasTodas(tareasTodas.map((tarea, index) => {
-    //         if (index === i) {
-    //             return {
-    //                 ...tarea,
-    //                 riego: {
-    //                     ...tarea.riego,
-    //                     estado: tarea.riego.estado === 'check' ? 'uncheck' : 'check'
-    //                 }
-    //             };
-    //         }
-    //         return tarea;
-    //     }));
-    // }
-
-    // // console.log('soy cultivos', cultivosUser)
-    // console.log('soy tareasTotales', tareasTodas)
-    // console.log(fechaHoy.toLocaleDateString())
-
-
-//     return <section className="p-6">
-//     <h3 className="text-2xl dark:text-white text-Verde-oscuro-800 font-titulo mb-8">Riego</h3>
-//     <ul className="dark:text-white text-Verde-oscuro-800 flex flex-col gap-4">
-//         {
-//             tareasRiego.map((p, i) => {
-//                 console.log('soy p', p);
-//                 return (
-//                     <>
-//                         <li key={i} >x{p.estado} </li> 
-//                     </>
-//                 );
-//             })
-//             // tareasTodas.map((tareariego, i) => {
-//             //     return(<>
-//             //         <li key={i} className="text-xl flex gap-4 items-center">
-//             //             <button 
-//             //                 onClick={(e) => checkTarea(e, i)}> 
-//             //                 {tareariego.riego.estado === 'check' ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-//             //             </button>
-//             //             <p className={tareariego.riego.estado === 'check' ? `line-through` : 'no-underline'}>Para {tareariego.nombre} regar {tareariego.riego.tarea}ml</p>
-//             //         </li>
-//             //     </>)
-//             // })
-//         }
-//     </ul>
-// </section>

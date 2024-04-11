@@ -1,7 +1,7 @@
 import logo from "../../assets/logo-cultivos.svg";
 import logoDark from "../../assets/logo-cultivos-dark.svg";
 import { Button, Modal } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   agregarCultivo,
   listarCultivos,
@@ -11,10 +11,12 @@ import { Alert } from "flowbite-react";
 import TarjetaCultivos from "../../Componentes/Cultivos/TarjetaCultivos";
 import Loader from "../../Componentes/globales/Loader/Loader";
 
+import { Tema } from "../../App";
+
 function Cultivos() {
-  const [darkMode, setDarkMode] = useState(
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
+  
+  const {darkMode} = useContext(Tema)
+
   const [openModal, setOpenModal] = useState(false);
   const [cultivos, setCultivos] = useState([]);
   const [cultivosData, setCultivosData] = useState([]);
@@ -55,20 +57,22 @@ function Cultivos() {
   }, []);
 
   useEffect(() => {
-    const arrayCultivos = [];
-    for (let i = 0; i < cultivos.length; i++) {
-      console.log(cultivos[i].cultivo);
-      const actualizado = cultivos[i];
-      for (let a = 0; a < cultivosData.length; a++) {
-        if (cultivos[i].cultivo === cultivosData[a].nombre) {
-          actualizado.data = cultivosData[a];
-          arrayCultivos.push(actualizado);
-          console.log('soy array',arrayCultivos)
+    if (cultivos) {
+      const arrayCultivos = [];
+      for (let i = 0; i < cultivos.length; i++) {
+        console.log(cultivos[i].cultivo);
+        const actualizado = cultivos[i];
+        for (let a = 0; a < cultivosData.length; a++) {
+          if (cultivos[i].cultivo === cultivosData[a].nombre) {
+            actualizado.data = cultivosData[a];
+            arrayCultivos.push(actualizado);
+            console.log('soy array',arrayCultivos)
+          }
         }
       }
+      console.log(arrayCultivos);
+      setData(arrayCultivos);  //informacion de los cultivos
     }
-    console.log(arrayCultivos);
-    setData(arrayCultivos);  //informacion de los cultivos
   }, [cultivos]);
 
   async function actualizandoAdd() {
@@ -163,7 +167,7 @@ function Cultivos() {
           Tus Cultivos
         </h1>
 
-        {cultivos.length === 0 ? (
+        {!cultivos || cultivos.length === 0 ? (
           <>
             {/* Cuando no hay cultivos */}
             <div className="h-full flex items-center justify-center flex-col pt-16 gap-2">
@@ -179,7 +183,11 @@ function Cultivos() {
               >
                 Agrégalo Aquí
               </a>
-              <img src={logo} alt="Logo de Cultivos" className="mt-8 dark:fill-white" />
+              {
+                darkMode
+                ? (<img src={logoDark} alt="Logo de Cultivos" className="mt-8" />)
+                : (<img src={logo} alt="Logo de Cultivos" className="mt-8" />)
+              }
             </div>
           </>
         ) : (
