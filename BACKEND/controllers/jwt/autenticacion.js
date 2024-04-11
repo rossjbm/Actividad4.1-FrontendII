@@ -13,20 +13,20 @@ async function autenticacionPorHeader (req, res, next) {
         const tokenReq = req.headers.authorization
         console.log(tokenReq)
         if (tokenReq == 'null') {
-            res.status(400).json({"status": 400, mensaje: 'Debes ingresar un token para acceder a esta ruta'})
+            return res.status(400).json({"status": 400, mensaje: 'Debes ingresar un token para acceder a esta ruta'})
         }
         if (tokenReq === undefined) {
-            res.status(400).json({"status": 400, mensaje: 'Debes ingresar un token para acceder a esta ruta'})
+            return res.status(400).json({"status": 400, mensaje: 'Debes ingresar un token para acceder a esta ruta'})
         }
         console.log(tokenReq)
         const token = req.headers.authorization.split(' ').pop()
         const tokenData = await verifyToken(token)
-
+        console.log(tokenData);
         
-        if (tokenData.data.id) {
+        if ( tokenData && tokenData.data.id) {
             return tokenData.data
         } else {
-            res.status(400).json({"status": 400, mensaje: 'Token inválido'})
+            return res.status(400).json({"status": 400, mensaje: 'Token inválido'})
             
         }
     }catch (error){
