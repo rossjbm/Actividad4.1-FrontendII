@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
 import { porCultivo } from "../../peticiones/calendario";
+import Regadera from "../../assets/IconosCalendario/regadera.png"
+import Crecimiento from "../../assets/IconosCalendario/crecimiento.png"
+import Fertilizante from "../../assets/IconosCalendario/fertilizante.png"
+import Lechuga from "../../assets/IconosCalendario/lechuga.png"
+import Muerte from "../../assets/IconosCalendario/muerte.png"
+import Patata from "../../assets/IconosCalendario/patata.png"
+import Pesticida from "../../assets/IconosCalendario/pesticida.png"
+import Pimiento from "../../assets/IconosCalendario/pimiento.png"
+import Tijeras from "../../assets/IconosCalendario/tijeras.png"
+import Tomate from "../../assets/IconosCalendario/tomate.png"
+import Zanahoria from "../../assets/IconosCalendario/zanahoria.png"
 
 
 export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId}){
@@ -16,6 +27,7 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId})
     const [frutosCreciendoDias,setFrutosCreciendoDias] = useState([])
     const [cosechaDias,setCosechaDias] = useState([])
     const [muerteDias,setMuerteDias] = useState([])
+
     
     const date = new Date();
     const hoy = date.getDate();
@@ -170,12 +182,12 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId})
                             <p>cli</p>
                         </div>
                         <div className="w-full flex align-middle flex-wrap justify-around h-1/2">
-                            {fertilizarDias.length < 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? "/src/assets/IconosCalendario/fertilizante.png":null):null}/> :null }
-                            {podarDias.length < 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? "/src/assets/IconosCalendario/tijeras.png":null):null}/>:null}
-                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (frutosCreciendoDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (frutosCreciendoDias.includes(VidaUtil[i-ajusteVidaUtil])? "/src/assets/IconosCalendario/crecimiento.png":null):null}/>
-                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (regarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (regarDias.includes(VidaUtil[i-ajusteVidaUtil])? "/src/assets/IconosCalendario/regadera.png":null):null}/>
-                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? "/src/assets/IconosCalendario/zanahoria.png":null):null}/>
-                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (muerteDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (muerteDias.includes(VidaUtil[i-ajusteVidaUtil])? "/src/assets/IconosCalendario/muerte.png":null):null}/>
+                            {fertilizarDias.length < 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? Fertilizante :null):null}/> :null }
+                            {podarDias.length < 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? Tijeras :null):null}/>:null}
+                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (frutosCreciendoDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (frutosCreciendoDias.includes(VidaUtil[i-ajusteVidaUtil])? Crecimiento :null):null}/>
+                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (regarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (regarDias.includes(VidaUtil[i-ajusteVidaUtil])? Regadera :null):null}/>
+                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? Zanahoria :null):null}/>
+                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (muerteDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (muerteDias.includes(VidaUtil[i-ajusteVidaUtil])? Muerte :null):null}/>
                         </div>
                     </div>
                 ))}
