@@ -30,8 +30,10 @@ export function CalendarioGeneral() {
     useEffect(() => {
         async function actualizarCultivos() {
           const lista = await listarCultivos(usuarioId);
-          setListaCultivos(lista)
-          setCultivoId(lista[0]._id)
+          if(lista) {
+            setListaCultivos(lista)
+            setCultivoId(lista[0]._id)
+          }
         }
         actualizarCultivos();
       }, []);
@@ -63,11 +65,15 @@ export function CalendarioGeneral() {
                 <div className='  w-auto drop-shadow-lg px-6 py-1 rounded-xl items-center'>
                     <div className='font-titulo text-sm w-auto'>
                         <form className="max-w-sm mx-auto">
-                            <select  onChange={handleSelectChange} className="bg-Verde-claro-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-Verde-oscuro-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                {listaCultivos.map((e,i)=>( 
-                                    <option key={i} value={e._id}>{e.cultivo}</option>
-                                ))}
-                            </select>
+                            {
+                                listaCultivos || listarCultivos.length > 0 ?
+                                    <select  onChange={handleSelectChange} className="bg-Verde-claro-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-Verde-oscuro-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    {listaCultivos.map((e,i)=>( 
+                                        <option key={i} value={e._id}>{e.cultivo}</option>
+                                    ))}
+                                    </select>
+                                : <div><p>No tienes Cultivos Registrados</p></div>
+                            }
                         </form>
                         
                     </div>
