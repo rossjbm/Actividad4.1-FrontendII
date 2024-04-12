@@ -80,3 +80,26 @@ export async function agregarCultivo(cultivo) {
             throw ("Error:", error)
         })
 }
+
+export async function actualizarEstado(posicion, id, tarea, cambio) {
+    fetch(`http://localhost:3000/cultivos/tareaEstado`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({posicion, id, tarea, cambio})
+    })
+        .then(response => response.json())
+        .then(response => {
+            if (response.error) {
+                console.log('error', response.error);
+                throw response.error
+            } else {
+                console.log(response)
+                return response;
+            }
+        })
+        .catch((error) => {
+            throw ("Error:", error)
+        })
+}

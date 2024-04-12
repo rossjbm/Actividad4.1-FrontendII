@@ -3,6 +3,10 @@ const mongoose = require('mongoose'); //requerimos libreria de mongo
 const cultivosSchema = new mongoose.Schema( 
     {
         id: mongoose.Schema.ObjectId,
+        cultivo: {
+            type: String,
+            required: true
+        },
         nombre: {
             type: String,
             required: true
@@ -23,6 +27,22 @@ const cultivosSchema = new mongoose.Schema(
         fertilizante: {
             type: String,
             required: true
+        },
+        pesticida: {
+            type: Object,
+        },
+        //tareas
+        regar: {
+            type: Object,
+        },
+        podar: {
+            type: Object,
+        },
+        fertilizar: {
+            type: Object,
+        },
+        fumigar: {
+            type: Object,
         }
     },
     {

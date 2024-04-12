@@ -3,5 +3,9 @@ const router = express.Router();
 const usuariosController = require('../controllers/usuarios.controller')
 
 router.get('/' , usuariosController.listarUna);
+router.get('/haber/:id' , usuariosController.listarPorId);
+router.post('/login', usuariosController.iniciarSesion)
+router.get('/verificar', usuariosController.verificacion)
+router.post('/registro', usuariosController.registro)
 
 module.exports = router;

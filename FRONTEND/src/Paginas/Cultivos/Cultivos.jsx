@@ -1,7 +1,7 @@
 import logo from "../../assets/logo-cultivos.svg";
 import logoDark from "../../assets/logo-cultivos-dark.svg";
 import { Button, Modal } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   agregarCultivo,
   listarCultivos,
@@ -9,11 +9,14 @@ import {
 } from "../../peticiones/cultivos";
 import { Alert } from "flowbite-react";
 import TarjetaCultivos from "../../Componentes/Cultivos/TarjetaCultivos";
+import Loader from "../../Componentes/globales/Loader/Loader";
+
+import { Tema } from "../../App";
 
 function Cultivos() {
-  const [darkMode, setDarkMode] = useState(
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
+  
+  const {darkMode} = useContext(Tema)
+
   const [openModal, setOpenModal] = useState(false);
   const [cultivos, setCultivos] = useState([]);
   const [cultivosData, setCultivosData] = useState([]);
@@ -22,19 +25,29 @@ function Cultivos() {
   const [seleccionadoData, setSeleccionadoData] = useState(null);
   const [alertaCorrecta, setAlertaCorrecta] = useState(false);
   const [alertaError, setAlertaError] = useState(false);
-  const [usuarioId, setUsuarioId] = useState("66087d688f59b6724beff8e5"); // Ejemplo
+  const [usuarioId, setUsuarioId] = useState(localStorage.getItem("usuarioId")); // Ejemplo
   const [state, setState] = useState({
     nombre: "",
-    usuarioId: "66087d688f59b6724beff8e5", //Ejemplo
+    cultivo: "",
+    usuarioId: usuarioId, //Ejemplo
     fertilizante: "",
     plantacion: "",
     superficie: "",
     numeroCultivos: "",
   });
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoaded(true);
+    }, 2000); // Tiempo en milisegundos para simular la carga
+  
+    return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
+  }, []);
 
   useEffect(() => {
     async function actualizarCultivos() {
-      const data = await listarCultivos(usuarioId);
+      const data = await listarCultivos(usuarioId); //cultivos guarda los cultivos de usuario
       const datos = await listarCultivosData();
       setCultivos(data);
       setCultivosData(datos);
@@ -44,28 +57,37 @@ function Cultivos() {
   }, []);
 
   useEffect(() => {
-    const arrayCultivos = [];
-    for (let i = 0; i < cultivos.length; i++) {
-      console.log(cultivos[i].nombre);
-      const actualizado = cultivos[i];
-      for (let a = 0; a < cultivosData.length; a++) {
-        if (cultivos[i].nombre === cultivosData[a].nombre) {
-          actualizado.data = cultivosData[a];
-          arrayCultivos.push(actualizado);
+    if (cultivos) {
+      const arrayCultivos = [];
+      for (let i = 0; i < cultivos.length; i++) {
+        console.log(cultivos[i].cultivo);
+        const actualizado = cultivos[i];
+        for (let a = 0; a < cultivosData.length; a++) {
+          if (cultivos[i].cultivo === cultivosData[a].nombre) {
+            actualizado.data = cultivosData[a];
+            arrayCultivos.push(actualizado);
+            console.log('soy array',arrayCultivos)
+          }
         }
       }
+      console.log(arrayCultivos);
+      setData(arrayCultivos);  //informacion de los cultivos
     }
-    console.log(arrayCultivos);
-    setData(arrayCultivos);
   }, [cultivos]);
+
+  async function actualizandoAdd() {
+    const data = await listarCultivos(usuarioId);
+    setCultivos(data);
+  }
 
   function cargarCultivo(id) {
     for (let i = 0; i < cultivos.length; i++) {
       if (cultivos[i]._id === id) {
-        setSeleccionado(cultivos[i]);
+        setSeleccionado(cultivos[i]);  //seleccionado cultivo de usuario
         for (let a = 0; a < cultivosData.length; a++) {
-          if (cultivosData[a].nombre === cultivos[i].nombre) {
-            setSeleccionadoData(cultivosData[a]);
+          if (cultivosData[a].nombre === cultivos[i].cultivo) {
+            setSeleccionadoData(cultivosData[a]);  //data del cultivo seleccionado
+            console.log('soy cultivo de selecicoando', cultivosData[a])
           }
         }
       }
@@ -98,7 +120,9 @@ function Cultivos() {
     }
 
     const respuesta = await agregarCultivo(state);
+    console.log(respuesta)
     if (respuesta === undefined) {
+      actualizandoAdd()
       setOpenModal(false);
       setAlertaCorrecta(!alertaCorrecta);
     } else {
@@ -108,6 +132,9 @@ function Cultivos() {
 
   return (
     <>
+      {!loaded ? (
+        <Loader /> // Muestra el loader mientras se simula la carga
+      ) : (
       <section className="py-12 px-4 min-h-[100vh] ">
         {alertaCorrecta ? (
           <>
@@ -140,7 +167,7 @@ function Cultivos() {
           Tus Cultivos
         </h1>
 
-        {cultivos.length === 0 ? (
+        {!cultivos || cultivos.length === 0 ? (
           <>
             {/* Cuando no hay cultivos */}
             <div className="h-full flex items-center justify-center flex-col pt-16 gap-2">
@@ -156,7 +183,11 @@ function Cultivos() {
               >
                 Agrégalo Aquí
               </a>
-              <img src={logo} alt="Logo de Cultivos" className="mt-8 dark:fill-white" />
+              {
+                darkMode
+                ? (<img src={logoDark} alt="Logo de Cultivos" className="mt-8" />)
+                : (<img src={logo} alt="Logo de Cultivos" className="mt-8" />)
+              }
             </div>
           </>
         ) : (
@@ -186,7 +217,7 @@ function Cultivos() {
                       }}
                       className="text-center font-texto text-base font-semibold"
                     >
-                      {cultivo.nombre}
+                      {cultivo.cultivo}
                     </a>
                   </li>
                 ))}
@@ -209,7 +240,7 @@ function Cultivos() {
                 }
               </div>
 
-              <div className="md:grid md:grid-cols-2 gap-4 lg:grid-cols-3">
+              <div className="md:grid md:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-3">
                 {seleccionado === null ? (
                   data.map((cultivo, id) => (
                     <>
@@ -253,16 +284,16 @@ function Cultivos() {
               >
                 <div className="flex flex-col gap-2">
                   <label
-                    htmlFor="nombre"
+                    htmlFor="cultivo"
                     className="dark:text-white font-titulo text-lg text-Verde-oscuro-800"
                   >
                     Selecciona el Cultivo:
                   </label>
                   <select
                     onChange={cambiando}
-                    value={state.nombre}
-                    name="nombre"
-                    id="nombre"
+                    value={state.cultivo}
+                    name="cultivo"
+                    id="cultivo"
                     className="dark:bg-Verde-claro-600 dark:text-white rounded-3xl border-none text-Verde-oscuro-800 px-4 font-texto focus:outline-none"
                     required
                   >
@@ -282,6 +313,24 @@ function Cultivos() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="nombre"
+                    className="dark:text-white font-titulo text-lg text-Verde-oscuro-800"
+                  >
+                    Da un Nombre a tu Cultivo:
+                  </label>
+                  <input
+                    type="text"
+                    onChange={cambiando}
+                    value={state.nombre}
+                    name="nombre"
+                    id="nombre"
+                    className="dark:bg-Verde-claro-600 dark:text-white rounded-3xl border-none text-Verde-oscuro-800 px-4 font-texto focus:outline-none"
+                    required
+                  />
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -387,8 +436,9 @@ function Cultivos() {
           </Modal.Body>
         </Modal>
       </section>
-    </>
-  );
+      )}
+  </>
+);
 }
 
 export default Cultivos;
