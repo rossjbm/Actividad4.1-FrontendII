@@ -72,7 +72,7 @@ function Login() {
             <main className="w-full h-[900px] bg-fondoLanding bg-cover bg-center bg-no-repeat flex justify-center items-center lg:items-start lg:pt-20">
                 <div className="w-[90vw] md:w-[60vw] xl:w-[40vw] p-8 bg-Marron-400 dark:bg-Verde-oscuro-800 rounded-2xl border-[3px] flex flex-col gap-6 border-Verde-oscuro-800 dark:border-white">
                     <h1 className="font-titulo text-Verde-oscuro-800 dark:text-white text-3xl text-center">Iniciar Sesión</h1>
-                    <form onSubmit={subida} action="" className="flex flex-col gap-6">
+                    <form onSubmit={subida} action="" className="space-y-4">
                         <div className="flex flex-col gap-2">
                             <label
                                 htmlFor="usuario"
@@ -108,12 +108,13 @@ function Login() {
                                 required
                             />
                         </div>
-
+                        <div className="flex justify-center p-2">
+                        <button type="submit" className="rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 font-bold py-2 px-8 hover:bg-Verde-claro-800">Iniciar</button>
+                        </div>
                         <div className="flex justify-center items-center space-x-2">
                         <span className="text-black dark:text-white">¿Aún no has iniciado sesión?</span>
                         <Link to="/registro" className="hover:underline text-black dark:text-white">Registrate</Link>
                         </div>
-                        <button type="submit" className="rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 font-bold py-2 px-8 hover:bg-Verde-claro-800">Iniciar</button>
                     </form>
                 </div>
             </main>
