@@ -1,7 +1,7 @@
 import logo from "../../assets/logo-cultivos.svg";
 import logoDark from "../../assets/logo-cultivos-dark.svg";
 import { Button, Modal } from "flowbite-react";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   agregarCultivo,
   listarCultivos,
@@ -41,19 +41,16 @@ function Cultivos() {
     const timer = setTimeout(() => {
       setLoaded(true);
     }, 2000); // Tiempo en milisegundos para simular la carga
-  
-    return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
-  }, []);
 
-  useEffect(() => {
     async function actualizarCultivos() {
       const data = await listarCultivos(usuarioId); //cultivos guarda los cultivos de usuario
       const datos = await listarCultivosData();
       setCultivos(data);
       setCultivosData(datos);
     }
-
     actualizarCultivos();
+  
+    return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
   }, []);
 
   useEffect(() => {
@@ -111,7 +108,7 @@ function Cultivos() {
     });
   };
 
-  async function subida(e) {
+  async function subida(e, id) {
     e.preventDefault();
     const error = validacion();
 
@@ -119,6 +116,7 @@ function Cultivos() {
       return setAlertaError(!alertaError);
     }
 
+    
     const respuesta = await agregarCultivo(state);
     console.log(respuesta)
     if (respuesta === undefined) {
@@ -128,6 +126,7 @@ function Cultivos() {
     } else {
       setAlertaError(!alertaError);
     }
+    
   }
 
   return (
@@ -211,7 +210,6 @@ function Cultivos() {
                     className="dark:text-white dark:bg-Marron-900 dark:hover:text-Marron-900 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 text-Verde-oscuro-800 hover:text-Verde-claro-600 hover:bg-Verde-oscuro-800 transition-all duration-300 p-2 rounded-xl cursor-pointer"
                   >
                     <a
-                      key={id}
                       onClick={(e) => {
                         cargarCultivo(cultivo._id);
                       }}
@@ -243,15 +241,13 @@ function Cultivos() {
               <div className="md:grid md:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-3">
                 {seleccionado === null ? (
                   data.map((cultivo, id) => (
-                    <>
-                      <div className="w-full flex flex-col">
-                        <TarjetaCultivos
-                          key={id}
-                          cultivo={cultivo}
-                          cultivoData={cultivo.data}
-                        />
-                      </div>
-                    </>
+                    <div className="w-full flex flex-col">
+                      <TarjetaCultivos
+                        key={id}
+                        cultivo={cultivo}
+                        cultivoData={cultivo.data}
+                      />
+                    </div>
                   ))
                 ) : (
                   <>
@@ -301,7 +297,7 @@ function Cultivos() {
                       value=""
                       className="dark:bg-Verde-claro-600 dark:text-white font-texto text-Verde-oscuro-800 px-4"
                     >
-                      cultivo
+                      
                     </option>
                     {cultivosData.map((cultivoData, id) => (
                       <option
