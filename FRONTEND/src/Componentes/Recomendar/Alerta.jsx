@@ -11,7 +11,7 @@ import { Tema } from "../../App"
 
 const Alerta = ({ titulo, mensaje, tipo, onClose }) => {
     const modalClasses = `fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50`;
-    const modalContentClasses = `bg-Marron-400 p-6 rounded-lg shadow-lg flex flex-col items-center dark:bg-Verde-oscuro-600`;
+    const modalContentClasses = `bg-Marron-400 p-6 rounded-lg shadow-lg flex flex-col items-center dark:bg-Verde-oscuro-600 w-5/6 md:w-1/2`;
     const alertClasses = `text-black text-center text-lg font-texto dark:bg-Verde-oscuro-600 dark:text-white`;
     const tituloClasses = `text-xl mb-2 font-titulo dark:bg-Verde-oscuro-600 dark:text-white`;
     const imagenClasses = `mt-8 mb-5 w-28`; 
