@@ -3,6 +3,14 @@ import { ImagenClima } from "./ImagenClima";
 
 export function ClimaDeHoy( {climaHoy, fechaHoy}) {
     console.log(fechaHoy)
+
+    if (climaHoy === undefined) {
+        return(
+            <div className="flex flex-col justify-center items-center my-10">
+                <div className="animate-spin rounded-full h-10 w-10  border-t-4 border-b-4 border-black dark:border-white"></div>
+            </div>
+        )
+    }
     const hora = fechaHoy.getHours();
     const minutos = fechaHoy.getMinutes();
     const codigo = climaHoy.codigo
