@@ -39,15 +39,15 @@ const FormularioCultivo = () => {
                 const dataUsuario = await listarUsuarioId(usuarioId)
                 console.log('DATA',dataUsuario)
                 try {
-                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${dataUsuario.latitud}&longitude=${dataUsuario.longitud}&hourly=temperature_2m,relative_humidity_2m,weather_code&forecast_days=1`);
+                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${dataUsuario.latitud}&longitude=${dataUsuario.longitud}&current=temperature_2m,relative_humidity_2m&forecast_days=1`);
                     if (!response.ok) {
                         throw new Error('Error en la solicitud a la API');
                     }
                     const data = await response.json();
     
-                    if (data && data.hourly && data.hourly.temperature_2m && data.hourly.relative_humidity_2m) {
-                        const temp = data.hourly.temperature_2m[11];
-                        const hum = data.hourly.relative_humidity_2m[11];
+                    if (data && data.current && data.current.temperature_2m && data.current.relative_humidity_2m) {
+                        const temp = data.current.temperature_2m;
+                        const hum = data.current.relative_humidity_2m;
     
                         setTemperatura(temp);
                         setHumedad(hum);
