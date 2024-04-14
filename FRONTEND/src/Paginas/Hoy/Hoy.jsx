@@ -24,6 +24,7 @@ import { Tema } from "../../App";
 export function Hoy(){
     const {darkMode} = useContext(Tema)
     const [loaded, setLoaded] = useState(false);
+    const [loaderClima, setLoaderClima] = useState(false);
     const [cultivosUser, setCultivosUser] = useState([]);
     const [fechaHoy, setFechaHoy] = useState(new Date());
 
@@ -52,44 +53,7 @@ export function Hoy(){
             setLoaded(true);
         }, 2000); // Tiempo en milisegundos para simular la carga
 
-        async function datosClima() {
-            try {
-                const dataUsuario = await listarUsuarioId(usuarioId)
-                console.log('DATA',dataUsuario)
-
-                try {
-                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${dataUsuario.latitud}&longitude=${dataUsuario.longitud}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m&forecast_days=1`);
-                    if (!response.ok) {
-                        throw new Error('Error en la solicitud a la API');
-                    }
-                    const data = await response.json();
-                    console.log('clima', data)
-                    setTemperaturaHoy(data.current.temperature_2m)
-
-                    console.log('datos', data.current_units.temperature_2m)
-
-                    setClimaHoy({
-                        temperatura: data.current.temperature_2m,
-                        temperaturaMedida: data.current_units.temperature_2m,
-                        humedad: data.current.relative_humidity_2m,
-                        humedadMedida: data.current_units.relative_humidity_2m,
-                        vviento: data.current.wind_speed_10m,
-                        vvientoMedida: data.current_units.wind_speed_10m,
-                        dviento: data.current.wind_direction_10m,
-                        dvientoMedida: data.current_units.wind_direction_10m,
-                        codigo: data.current.weather_code
-                    })
-                } catch (error) {
-                    console.log('error en la API', error)
-                }
-
-            } catch (error) {
-                console.log(error)
-                throw error
-            }
-
-        }
-        datosClima()
+        datosClima();
 
         async function guardarCultivos() {
             const cultivos = await listarCultivos(usuarioId);
@@ -101,6 +65,36 @@ export function Hoy(){
         
         return () => clearTimeout(timer); // Limpia el timer al desmontar el componente
     }, []);
+
+    async function datosClima() {
+        try {
+            const dataUsuario = await listarUsuarioId(usuarioId);
+            console.log('DATA', dataUsuario);
+
+            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${dataUsuario.latitud}&longitude=${dataUsuario.longitud}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m&forecast_days=1`);
+            console.log('soy response', response);
+            const data = await response.json();
+            console.log('clima', data);
+            setTemperaturaHoy(data.current.temperature_2m);
+
+            console.log('datos', data.current_units.temperature_2m);
+
+            setClimaHoy({
+                temperatura: data.current.temperature_2m,
+                temperaturaMedida: data.current_units.temperature_2m,
+                humedad: data.current.relative_humidity_2m,
+                humedadMedida: data.current_units.relative_humidity_2m,
+                vviento: data.current.wind_speed_10m,
+                vvientoMedida: data.current_units.wind_speed_10m,
+                dviento: data.current.wind_direction_10m,
+                dvientoMedida: data.current_units.wind_direction_10m,
+                codigo: data.current.weather_code
+            });
+
+        } catch (error) {
+            console.log('error en la API', error);
+        }
+    }
 
     useEffect(() => {
         if (cultivosUser && cultivosUser.length != 0) {
@@ -126,8 +120,8 @@ export function Hoy(){
                                 const minimo = cultivoData.temperatura.minima
                                 const medio = cultivoData.temperatura.media
                                 const maximo = cultivoData.temperatura.maxima
-
                                 await cantidadAgua(temperaturaHoy, minimo, medio, maximo, cultivoData)
+
                                 riegoLista=[...riegoLista, {regar: true, estado:[i, cultivo.regar.hecho[i]], nombre: cultivo.nombre, idCultivo:cultivo._id, cantidad: cantidadRiego.current*cultivo.numeroCultivos}];
                             }
                         }
@@ -203,6 +197,7 @@ export function Hoy(){
     }
 
     async function cantidadAgua(temperaturaHoy, minimo, medio, maximo, cultivoData) {
+        console.log('entramos')
         const diferencia1 = Math.abs(temperaturaHoy - minimo)
         const diferencia2 = Math.abs(temperaturaHoy - medio)
         const diferencia3 = Math.abs(temperaturaHoy - maximo)
@@ -227,7 +222,7 @@ export function Hoy(){
             <h1 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center">Hoy es {fechaHoy.toLocaleDateString()} </h1>
 
             <ClimaDeHoy climaHoy={climaHoy} fechaHoy={fechaHoy} />
-
+            
             <Recomendar/>
 
             <h2 className="dark:text-white text-Verde-oscuro-800 font-titulo text-2xl text-center mt-10">Todas tus Tareas de Hoy</h2>
@@ -247,17 +242,14 @@ export function Hoy(){
                                         <ul className="text-Verde-oscuro-800 flex flex-col gap-4">
                                             {
                                                 tareasRiego.map((p, i) => {
-                                                    // console.log('soy p', p);
                                                     return (
-                                                        <>
-                                                            <li key={i} className="text-lg flex gap-4 items-center">
-                                                                <button 
-                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'regar', p.estado[1], tareasRiego, setTareasRiego)}> 
-                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                                </button>
-                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para "{p.nombre}" regar {p.cantidad} ml</p>
-                                                            </li> 
-                                                        </>
+                                                        <li key={i} className="text-lg flex gap-4 items-center">
+                                                            <button 
+                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'regar', p.estado[1], tareasRiego, setTareasRiego)}> 
+                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                            </button>
+                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para "{p.nombre}" regar {p.cantidad} ml</p>
+                                                        </li> 
                                                     );
                                                 })
                                             }
@@ -283,15 +275,13 @@ export function Hoy(){
                                                 tareasPoda.map((p, i) => {
                                                     console.log('soy p', p);
                                                     return (
-                                                        <>
-                                                            <li key={i} className="text-xl flex gap-4 items-center">
-                                                                <button 
-                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'podar', p.estado[1], tareasPoda, setTareasPoda)}> 
-                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                                </button>
-                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre} ml</p>
-                                                            </li> 
-                                                        </>
+                                                        <li key={i} className="text-xl flex gap-4 items-center">
+                                                            <button 
+                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'podar', p.estado[1], tareasPoda, setTareasPoda)}> 
+                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                            </button>
+                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre}</p>
+                                                        </li> 
                                                     );
                                                 })
                                             }
@@ -317,15 +307,13 @@ export function Hoy(){
                                                 tareasFertilizante.map((p, i) => {
                                                     console.log('soy p', p);
                                                     return (
-                                                        <>
-                                                            <li key={i} className="text-xl flex gap-4 items-center">
-                                                                <button 
-                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fertilizar', p.estado[1], tareasFertilizante, setTareasFertilizante)}> 
-                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                                </button>
-                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre} ml</p>
-                                                            </li> 
-                                                        </>
+                                                        <li key={i} className="text-xl flex gap-4 items-center">
+                                                            <button 
+                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fertilizar', p.estado[1], tareasFertilizante, setTareasFertilizante)}> 
+                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                            </button>
+                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Para {p.nombre}</p>
+                                                        </li> 
                                                     );
                                                 })
                                             }
@@ -350,15 +338,13 @@ export function Hoy(){
                                                 tareasPesticida.map((p, i) => {
                                                     console.log('soy p', p);
                                                     return (
-                                                        <>
-                                                            <li key={i} className="text-xl flex gap-4 items-center">
-                                                                <button 
-                                                                    onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fumigar', p.estado[1], tareasPesticida, setTareasPesticida)}> 
-                                                                    {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
-                                                                </button>
-                                                                <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Aplicar {p.cantidad}{p.medida} de {p.pesticida} para "{p.nombre}"</p>
-                                                            </li> 
-                                                        </>
+                                                        <li key={i} className="text-xl flex gap-4 items-center">
+                                                            <button 
+                                                                onClick={(e) => Check(e, p.estado[0], p.idCultivo, 'fumigar', p.estado[1], tareasPesticida, setTareasPesticida)}> 
+                                                                {p.estado[1] === 1 ? <FaRegCheckSquare/> : <ImCheckboxUnchecked/>} 
+                                                            </button>
+                                                            <p className={p.estado[1] === 1 ? `line-through` : 'no-underline'}>Aplicar {p.cantidad}{p.medida} de {p.pesticida} para "{p.nombre}"</p>
+                                                        </li> 
                                                     );
                                                 })
                                             }
