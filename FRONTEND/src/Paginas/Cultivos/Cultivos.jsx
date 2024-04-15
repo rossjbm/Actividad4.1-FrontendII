@@ -21,6 +21,7 @@ function Cultivos() {
   const [cultivos, setCultivos] = useState([]);
   const [cultivosData, setCultivosData] = useState([]);
   const [data, setData] = useState([]);
+  const [lista, setLista] = useState([]);
   const [seleccionado, setSeleccionado] = useState(null);
   const [seleccionadoData, setSeleccionadoData] = useState(null);
   const [alertaCorrecta, setAlertaCorrecta] = useState(false);
@@ -47,6 +48,8 @@ function Cultivos() {
       const datos = await listarCultivosData();
       setCultivos(data);
       setCultivosData(datos);
+      var listaToda = [...new Set(data.map(cultivo => cultivo.cultivo))];
+      setLista(listaToda)
     }
     actualizarCultivos();
   
@@ -67,6 +70,8 @@ function Cultivos() {
           }
         }
       }
+      var listaToda = [...new Set(cultivos.map(cultivo => cultivo.cultivo))];
+      setLista(listaToda)
       console.log(arrayCultivos);
       setData(arrayCultivos);  //informacion de los cultivos
     }
@@ -75,18 +80,22 @@ function Cultivos() {
   async function actualizandoAdd() {
     const data = await listarCultivos(usuarioId);
     setCultivos(data);
+    var listaToda = [...new Set(data.map(cultivo => cultivo.cultivo))];
+    setLista(listaToda)
   }
 
-  function cargarCultivo(id) {
+  function cargarCultivo(tipo) {
+    var s = []
     for (let i = 0; i < cultivos.length; i++) {
-      if (cultivos[i]._id === id) {
-        setSeleccionado(cultivos[i]);  //seleccionado cultivo de usuario
-        for (let a = 0; a < cultivosData.length; a++) {
-          if (cultivosData[a].nombre === cultivos[i].cultivo) {
-            setSeleccionadoData(cultivosData[a]);  //data del cultivo seleccionado
-            console.log('soy cultivo de selecicoando', cultivosData[a])
-          }
-        }
+      if (cultivos[i].cultivo === tipo) {
+        s = [...s, cultivos[i]]
+        setSeleccionado(s);  //seleccionado cultivo de usuario
+        // for (let a = 0; a < cultivosData.length; a++) {
+        //   if (cultivosData[a].nombre === cultivos[i].cultivo) {
+        //     setSeleccionadoData(cultivosData[a]);  //data del cultivo seleccionado
+        //     console.log('soy cultivo de selecicoando', cultivosData[a])
+        //   }
+        // }
       }
     }
   }
@@ -204,18 +213,18 @@ function Cultivos() {
                     Todos
                   </a>
                 </li>
-                {cultivos.map((cultivo, id) => (
+                {lista.map((cultivo, id) => (
                   <li
                     key={id}
                     className="dark:text-white dark:bg-Marron-900 dark:hover:text-Marron-900 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 text-Verde-oscuro-800 hover:text-Verde-claro-600 hover:bg-Verde-oscuro-800 transition-all duration-300 p-2 rounded-xl cursor-pointer"
                   >
                     <a
                       onClick={(e) => {
-                        cargarCultivo(cultivo._id);
+                        cargarCultivo(cultivo);
                       }}
                       className="text-center font-texto text-base font-semibold"
                     >
-                      {cultivo.cultivo}
+                      {cultivo}
                     </a>
                   </li>
                 ))}
@@ -250,14 +259,15 @@ function Cultivos() {
                     </div>
                   ))
                 ) : (
-                  <>
+                  seleccionado.map((selec, id) => (
                     <div className="w-full flex flex-col">
                       <TarjetaCultivos
-                        cultivo={seleccionado}
-                        cultivoData={seleccionadoData}
+                        key={id}
+                        cultivo={selec}
+                        cultivoData={selec.data}
                       />
                     </div>
-                  </>
+                  ))
                 )}
               </div>
             </div>

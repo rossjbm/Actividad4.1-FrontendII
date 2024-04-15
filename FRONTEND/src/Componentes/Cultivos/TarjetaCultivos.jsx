@@ -99,7 +99,7 @@ function TarjetaCultivos({ cultivo, cultivoData }) {
               className="dark:text-white font-texto text-lg font-bold mt-2 text-Verde-oscuro-800 cursor-pointer text-center"
               onClick={() => setOpenPlaga(true)}
             >
-              ¿Contrajo un Plaga?
+              ¿Contrajo una Plaga?
             </a>
           </div>
           <div>
