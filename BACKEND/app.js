@@ -13,6 +13,7 @@ var cultivos_usuarios = require('./routes/cultivosUser.routes');
 var cultivos = require('./routes/cultivosData.routes');
 var usuarios = require('./routes/usuarios.routes');
 var calendario = require('./routes/calendarios.routes')
+var contacto = require('./routes/contacto')
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use('/cultivos', cultivos_usuarios);
 app.use('/cultivosData', cultivos);
 app.use('/usuarios', usuarios);
 app.use('/calendario', calendario);
+app.use('/contacto', contacto);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

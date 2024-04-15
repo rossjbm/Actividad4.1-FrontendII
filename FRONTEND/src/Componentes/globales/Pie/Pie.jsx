@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom'
 import RigoPlant from '../../../assets/icono-rigoplant.png'
 
@@ -10,6 +10,49 @@ import { FaGithub } from "react-icons/fa";
 
 
 export function Pie({headerMostrar}){
+
+    const [correo, setCorreo] = useState('')
+
+    const cambiando = (e) => {
+        setCorreo(e.target.value);
+    };
+
+    const validarCorreo = () => {
+        const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+        if (emailRegex.test(correo)) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    const subida = () => {
+        const errorCorreo = validarCorreo()
+
+        if (errorCorreo) {
+            console.log('error al enviar correo')
+            throw errorCorreo
+        }
+
+        fetch(`http://localhost:3000/contacto`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({correo: correo})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                setCorreo("");
+                console.log('exito')
+            }
+        })
+        .catch ((error) => {
+            throw ("Error:", error)
+        }) 
+    };
 
     return(<>
         <footer className={`p-6 font-texto text-Verde-oscuro-800 dark:text-white bg-Marron-400 dark:bg-Marron-900 lg:m-0 ${headerMostrar ? 'mb-20' : 'm-0'}`}>
@@ -34,8 +77,9 @@ export function Pie({headerMostrar}){
                             id='correo' 
                             placeholder='Ingresa tu correo eletrónico' 
                             className='w-3/5 rounded-full border-none py-3 px-4 text-Verde-oscuro-800 focus:border-none focus:ring-0'
+                            onChange={cambiando}
                         />
-                        <button onClick={(e) => (e.preventDefault(), console.log('enviar'))} className='font-titulo lg:text-lg outline outline-Verde-oscuro-400 w-2/5 h-full rounded-full bg-Verde-oscuro-400 hover:bg-Verde-oscuro-600 text-white'>¡Enviar Ahora!</button>
+                        <button onClick={(e) => (e.preventDefault(), subida())} className='font-titulo lg:text-lg outline outline-Verde-oscuro-400 w-2/5 h-full rounded-full bg-Verde-oscuro-400 hover:bg-Verde-oscuro-600 text-white'>¡Enviar Ahora!</button>
                         </div>
                     </form>
                     <div className='flex flex-row justify-around items-start mb-10'>

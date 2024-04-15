@@ -32,7 +32,7 @@ export function CerrarSesion({ isLogin, setIsLogin }) {
         {isLogin ? (
           <ErrorLogin/>
         ) : (
-          <button onClick={cerrarSesion} className='w-1/2 md:w-auto rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-oscuro-800 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 py-2 px-8 hover:bg-Verde-claro-800 dark:text-white'>Cerrar Sesión</button>
+          <button onClick={cerrarSesion} className='w-auto rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-oscuro-800 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 py-2 px-8 hover:bg-Verde-claro-800 dark:text-white mb-5'>Cerrar Sesión</button>
         )}
  
       </div>
