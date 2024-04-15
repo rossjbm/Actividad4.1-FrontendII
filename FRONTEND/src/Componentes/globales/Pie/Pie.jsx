@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom'
+import Alerta from '../../Recomendar/Alerta';
 import RigoPlant from '../../../assets/icono-rigoplant.png'
 
 //iconos
@@ -12,6 +13,12 @@ import { FaGithub } from "react-icons/fa";
 export function Pie({headerMostrar}){
 
     const [correo, setCorreo] = useState('')
+
+    //alerta
+    const [tipo, setTipo] = useState('');
+    const [mensaje, setMensaje] = useState('');
+    const [titulo, setTitulo] = useState('');
+    const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
     const cambiando = (e) => {
         setCorreo(e.target.value);
@@ -32,7 +39,7 @@ export function Pie({headerMostrar}){
 
         if (errorCorreo) {
             console.log('error al enviar correo')
-            throw errorCorreo
+            return errorCorreo
         }
 
         fetch(`http://localhost:3000/contacto`, {
@@ -47,9 +54,17 @@ export function Pie({headerMostrar}){
             if (data.status === 200) {
                 setCorreo("");
                 console.log('exito')
+                setMostrarAlerta(true);
+                setMensaje('Se ha enviado un mensaje a tu correo electrónico')
+                setTitulo('¡Ya Estamos en Contacto!')
+                setTipo('exito')
             }
         })
         .catch ((error) => {
+            setMostrarAlerta(true);
+            setMensaje('Ocurrió un error al enviar Correo');
+            setTitulo('Error')
+            setTipo('error')
             throw ("Error:", error)
         }) 
     };
@@ -106,5 +121,6 @@ export function Pie({headerMostrar}){
                 <p className='text-center text-sm lg:text-base'>© 2024 RigoPlant® - Todos los derechos reservados</p>
             </div>
         </footer>
+        {mostrarAlerta ? <Alerta titulo={titulo} mensaje={mensaje} tipo={tipo} onClose={() => setMostrarAlerta(false)} /> : null}
     </>)
 }

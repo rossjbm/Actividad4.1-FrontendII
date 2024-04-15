@@ -15,18 +15,19 @@ import Zanahoria from "../../assets/IconosCalendario/zanahoria.png"
 
 export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId}){
     const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-    const [mesAnterior,setMesAnterior] = useState([])
-    const [mesActual,setMesActual] = useState([])
-    const [mesSiguiente,setMesSiguiente] = useState([])
-    const [semanaDia,setSemanaDia]= useState([])
-    const [VidaUtil,setVidaUtil] = useState([])
-    const [ajusteVidaUtil,setAjusteVidaUtil] = useState([])
-    const [regarDias,setRegarDias] = useState([])
-    const [fertilizarDias,setFertilizarDias] = useState ([])
-    const [podarDias,setPodarDias] = useState([])
-    const [frutosCreciendoDias,setFrutosCreciendoDias] = useState([])
-    const [cosechaDias,setCosechaDias] = useState([])
-    const [muerteDias,setMuerteDias] = useState([])
+    const [mesAnterior,setMesAnterior] = useState([]);
+    const [mesActual,setMesActual] = useState([]);
+    const [mesSiguiente,setMesSiguiente] = useState([]);
+    const [semanaDia,setSemanaDia]= useState([]);
+    const [VidaUtil,setVidaUtil] = useState([]);
+    const [ajusteVidaUtil,setAjusteVidaUtil] = useState([]);
+    const [regarDias,setRegarDias] = useState([]);
+    const [fertilizarDias,setFertilizarDias] = useState ([]);
+    const [podarDias,setPodarDias] = useState([]);
+    const [frutosCreciendoDias,setFrutosCreciendoDias] = useState([]);
+    const [cosechaDias,setCosechaDias] = useState([]);
+    const [muerteDias,setMuerteDias] = useState([]);
+    const [iconoCultivo, setIconoCultivo] = useState('');
 
     
     const date = new Date();
@@ -71,11 +72,6 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId})
 
     const tareas = async () =>{
         const riego = await porCultivo(usuarioId,cultivoId)
-
-        
-
-        
-
         
         let vida = Array.from({length: riego.cultivo.vidaUtil.muerte}, (_, i) => i);
         let frutasCreciendo = await (Array.from({length: riego.cultivo.etapasFruto.fin}, (_, i) => i)).slice(riego.cultivo.etapasFruto.inicio)
@@ -119,17 +115,42 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId})
         } else {
             
         }
+        //Mostraremos según el cultivo que se trate
+        switch (riego.cultivo.nombreDeCultivo) {
+            case 'Lechuga':
+                setIconoCultivo(Lechuga)
+                break;
         
+            case 'Pimenton':
+                setIconoCultivo(Pimiento)
+                break;
+            case 'Tomate':
+                setIconoCultivo(Tomate)
+                break;
+            
+            case 'Papa':
+                setIconoCultivo(Patata)
+                break;
+            
+            case 'Zanahoria':
+                setIconoCultivo(Zanahoria)
+                break;
+                
+            default:
+                break;
+        }
+        console.log(fertilizarDias.length);
+        // En algunos casos no llevan Fertilizante o poda
         if (riego.cultivo.fertilizarPorDia.dias) {
             setFertilizarDias(riego.cultivo.fertilizarPorDia.dias)
         }else{setFertilizarDias([])}
         if (riego.cultivo.podarPorDia.dias) {
             setPodarDias(riego.cultivo.podarPorDia.dias)
         }else{setPodarDias([])}
-        setCosechaDias([riego.cultivo.vidaUtil.cosecha - 1])
+        // cosecha lo hice en una sola linea porque solo hay que comparar si muere el mismo dia de la cosecha, si no es así crear un array de la cosecha hasta la muerte :)
+        setCosechaDias((riego.cultivo.vidaUtil.muerte - 1) - (riego.cultivo.vidaUtil.cosecha - 1) == 0? [(riego.cultivo.vidaUtil.cosecha - 1)] :Array.from({length: (riego.cultivo.vidaUtil.muerte - 1) - (riego.cultivo.vidaUtil.cosecha - 1)}, (_, i) => i + (riego.cultivo.vidaUtil.cosecha - 1)))
         setMuerteDias([riego.cultivo.vidaUtil.muerte - 1])
         setFrutosCreciendoDias(frutasCreciendo)
-        
         setRegarDias(riego.cultivo.regarPorDia.dias)
         
     }
@@ -182,11 +203,11 @@ export function Calendario({setAnoMostrar,setMesMotrar,mes,usuarioId,cultivoId})
                             <p>cli</p>
                         </div>
                         <div className="w-full flex align-middle flex-wrap justify-around h-1/2">
-                            {fertilizarDias.length < 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? Fertilizante :null):null}/> :null }
-                            {podarDias.length < 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? Tijeras :null):null}/>:null}
+                            {fertilizarDias.length > 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (fertilizarDias.includes(VidaUtil[i-ajusteVidaUtil])? Fertilizante :null):null}/> :null }
+                            {podarDias.length > 1 ? <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (podarDias.includes(VidaUtil[i-ajusteVidaUtil])? Tijeras :null):null}/>:null}
                             <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (frutosCreciendoDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (frutosCreciendoDias.includes(VidaUtil[i-ajusteVidaUtil])? Crecimiento :null):null}/>
                             <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (regarDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (regarDias.includes(VidaUtil[i-ajusteVidaUtil])? Regadera :null):null}/>
-                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? Zanahoria :null):null}/>
+                            <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (cosechaDias.includes(VidaUtil[i-ajusteVidaUtil])? iconoCultivo :null):null}/>
                             <img className={`h-4 w-4 sm:h-6 sm:w-5  max-h-14 ${ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (muerteDias.includes(VidaUtil[i-ajusteVidaUtil])? "":'hidden'):'hidden'}`} src={ajusteVidaUtil < e && VidaUtil[i-ajusteVidaUtil]+1 ? (muerteDias.includes(VidaUtil[i-ajusteVidaUtil])? Muerte :null):null}/>
                         </div>
                     </div>

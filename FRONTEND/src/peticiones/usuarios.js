@@ -19,7 +19,8 @@ export async function listarUsuarioId(id) {
 }
 
 export async function agregarUsuario(datos) {
-    fetch(`http://localhost:3000/usuarios/registro`, {
+    return(
+        fetch(`http://localhost:3000/usuarios/registro`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -39,4 +40,5 @@ export async function agregarUsuario(datos) {
         .catch((error) => {
             throw ("Error:", error)
         })
+    )
 }

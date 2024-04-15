@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 
+import Alerta from "../../Componentes/Recomendar/Alerta";
+
 function Login() {
+
+    //alerta
+    const [tipo, setTipo] = useState('');
+    const [mensaje, setMensaje] = useState('');
+    const [titulo, setTitulo] = useState('');
+    const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
     const [state, setState] = useState({
         usuario: "",
@@ -48,6 +56,11 @@ function Login() {
                         usuario: '',
                         password: ''
                     })
+                    setMostrarAlerta(true);
+                    setMensaje(response.error);
+                    setTitulo('Ocurrió un Error')
+                    setTipo('error')
+                    // throw ("Error:", error)
                 } else {
                     console.log(response)
                     setState({
@@ -64,6 +77,11 @@ function Login() {
                     usuario: '',
                     password: ''
                 })
+                setMostrarAlerta(true);
+                setMensaje(error);
+                setTitulo('Ocurrió un Error')
+                setTipo('error')
+                throw ("Error:", error)
             })
     }
 
@@ -118,6 +136,7 @@ function Login() {
                     </form>
                 </div>
             </main>
+            {mostrarAlerta ? <Alerta titulo={titulo} mensaje={mensaje} tipo={tipo} onClose={() => setMostrarAlerta(false)} /> : null}
         </>
     )
 }

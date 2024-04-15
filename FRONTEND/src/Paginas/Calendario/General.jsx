@@ -11,12 +11,12 @@ export function CalendarioGeneral() {
     const [mes, setMes]= useState(0)
     const [loaded, setLoaded] = useState(false);
     const [usuarioId] = useState(localStorage.getItem("usuarioId"));
-    const [cultivoId,setCultivoId] = useState('6615b9ba65601bdbf1c624e4')
-    const [seleccionaCultivo, setSeleccionaCultivo] = useState('')
+    const [cultivoId,setCultivoId] = useState('')
     const [listaCultivos,setListaCultivos] = useState([])
+
+
     const cambiarMes = (cantidad) =>{
         const resultado = Number(mes) + cantidad
-        console.log(resultado);
         setMes(resultado)
     }
 
@@ -40,15 +40,13 @@ export function CalendarioGeneral() {
 
       const handleSelectChange = (event) => {
         setCultivoId(event.target.value)
-        // const seleccionadoCultivo = listaCultivos.find(e => e._id === seleccionadoId);
-        // this.setState({ seleccionaCultivo: seleccionadoCultivo.cultivo });
       };
 
     return <>
     {!loaded ? (
       <Loader /> // Muestra el loader mientras se simula la carga
     ) : (
-        <div className='flex pt-6 items-center justify-center flex-col'>
+        <div className='flex pt-6 items-center h- justify-center flex-col'>
             <div className='flex flex-row text-center mb-8 items-center'>
                 <button onClick={()=>{cambiarMes(-1)}}>
                     <BiSolidChevronLeft className="text-4xl"/>
@@ -66,13 +64,15 @@ export function CalendarioGeneral() {
                     <div className='font-titulo text-sm w-auto'>
                         <form className="max-w-sm mx-auto">
                             {
-                                listaCultivos || listarCultivos.length > 0 ?
+                                listaCultivos[0] && listarCultivos.length > 0 ?
                                     <select  onChange={handleSelectChange} className="bg-Verde-claro-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-Verde-oscuro-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     {listaCultivos.map((e,i)=>( 
                                         <option key={i} value={e._id}>{e.cultivo}</option>
                                     ))}
-                                    </select>
-                                : <div><p>No tienes Cultivos Registrados</p></div>
+                                    </select >
+                                : <div className="bg-Verde-claro-600 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-Verde-oscuro-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <p>No tienes Cultivos Registrados</p>
+                                  </div>
                             }
                         </form>
                         

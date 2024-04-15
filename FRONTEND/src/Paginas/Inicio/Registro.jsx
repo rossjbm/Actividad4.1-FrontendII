@@ -82,8 +82,11 @@ const RegistroFormulario = () => {
             setLatitud('');
             setLongitud('');
 
-            return setMostrarAlertaExito(true);
-
+            if (agregar === 'Se ha registrado correctamente') {
+                return setMostrarAlertaExito(true);
+            } else {
+                return setMostrarAlertaError(true)
+            }
         } catch (error) {
             setMostrarAlertaError(true)
             throw error
