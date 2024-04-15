@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Loader from "../../Componentes/globales/Loader/Loader";
-import { NavLink } from 'react-router-dom';
 import Perfil from './Perfil';
+import ErrorLogin from '../Inicio/ErrorLogin';
 
 
 export function CerrarSesion({ isLogin, setIsLogin }) {
@@ -27,12 +27,12 @@ export function CerrarSesion({ isLogin, setIsLogin }) {
     {!loaded ? (
       <Loader /> // Muestra el loader mientras se simula la carga
     ) : (
-      <div className='flex flex-col items-center justify-center h-full p-48'>
+      <div className='flex flex-col items-center justify-center h-full'>
         {!isLogin && <Perfil />}
         {isLogin ? (
-          <NavLink to={'/iniciosesion'} className='rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 font-bold py-2 px-8 hover:bg-Verde-claro-800 text-white'>Iniciar Sesión</NavLink>
+          <ErrorLogin/>
         ) : (
-          <button onClick={cerrarSesion} className='rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-claro-400 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 font-bold py-2 px-8 hover:bg-Verde-claro-800 text-white'>Cerrar Sesión</button>
+          <button onClick={cerrarSesion} className='w-1/2 md:w-auto rounded-3xl dark:bg-Verde-claro-800 dark:hover:bg-Verde-oscuro-800 bg-Verde-claro-600 font-titulo text-lg text-Verde-oscuro-800 py-2 px-8 hover:bg-Verde-claro-800 dark:text-white'>Cerrar Sesión</button>
         )}
  
       </div>

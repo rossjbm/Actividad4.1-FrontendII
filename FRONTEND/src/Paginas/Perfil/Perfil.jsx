@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { listarUsuarioId } from '../../peticiones/usuarios';
+import { listarCultivos } from '../../peticiones/cultivos';
+//icono
+import { FaUserLarge } from "react-icons/fa6"
 
 const Perfil = () => {
 
     const [usuarioId, setUsuarioId] = useState(localStorage.getItem("usuarioId"));
     const [dataUsuario, setDataUsuario] = useState({});
+    const [dataCultivos, setDataCultivos] = useState([]);
 
 
     useEffect(() => {
@@ -22,6 +26,14 @@ const Perfil = () => {
                 throw error
             }
 
+            try {
+                const data = await listarCultivos(usuarioId)
+                console.log('DATA CULTIVOS',data)
+                setDataCultivos(data)
+            } catch (error) {
+
+            }
+
         }
         extraerDatos()
         
@@ -35,13 +47,17 @@ const Perfil = () => {
             <div className="p-4 rounded-lg shadow-md w-96 bg-Marron-400 dark:bg-Verde-oscuro-800">
                 <h2 className="text-xl mb-4 text-center font-titulo dark:text-white">Perfil</h2>
 
-                <form className="space-y-4 ">
-                    <label htmlFor="nombreCompleto" className="block font-titulo dark:text-white">Nombre Completo: {dataUsuario.nombreCompleto} </label>
-                    
-                    <label htmlFor="usuarioUnico" className="block font-titulo dark:text-white">Usuario: {dataUsuario.usuarioUnico}</label>
+                <div className='text-center my-5 flex justify-center dark:text-Verde-claro-800'>
+                    <FaUserLarge className='text-6xl '/>
+                </div>
 
-                    <label htmlFor="correo" className="block font-titulo dark:text-white">Correo: {dataUsuario.correo}</label>
-                </form>                
+                <ul className="space-y-4 ">
+                    <li className="block font-titulo dark:text-white">Nombre Completo: {dataUsuario.nombreCompleto} </li>
+                    <li className="block font-titulo dark:text-white">Usuario: {dataUsuario.usuarioUnico}</li>
+                    <li className="block font-titulo dark:text-white">Correo: {dataUsuario.correo}</li>
+                    <li className="block font-titulo dark:text-white">Cultivos Totales: {dataCultivos.length}</li>
+
+                </ul>                
             </div>
         </div>
     </>
