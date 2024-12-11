@@ -1,9 +1,9 @@
 # Proyecto: 'RigoPlant' Parte I
 <br><h4>
-Estudiantes de la Universidad Valle del Momboy
-Facultad de Ingeniería
-Carrera Ingeniería en Computación
-Asignatura Frontend II
+Estudiantes de la Universidad Valle del Momboy<br>
+Facultad de Ingeniería<br>
+Carrera Ingeniería en Computación<br>
+Asignatura Frontend II<br>
 </h4>
 <br>
 <h3>Colaboradores
@@ -19,7 +19,6 @@ Asignatura Frontend II
 <h2>Descripción</h2>
 <b>Link del video explicativo: https://www.youtube.com/watch?v=hPbT-6pyuoI</b><br>
 <b>Link del Diseño en Figma:</b> https://www.figma.com/file/CRu8yikZ3KNg9qNZNKk3cF/Proyecto-4.1-Frontend-II?type=design&node-id=0-1&mode=design&t=IBsO1naxaMBavOnV-0<br>
-<b>Link de Herramienta para Gestionar el Proyecto:</b> https://buttercup-squirrel-32a.notion.site/Proyecto-RigoPlant-52ea4ea49374451a95ab58ec6d66a86e?pvs=4<br>
 
 RigoPlant es una PWA que consiste en un Simulador de Riego que ayudará a sus usuarios a gestionar el riego de sus cultivos, además de los cuidados básicos que conlleva dando al usuario recordatorios diarios de las actividades que debe cumplir para ello.
 
